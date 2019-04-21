@@ -20,7 +20,7 @@ jQuery( window ).load( function(){
 
 			_this.css( { 'width' : _width + _width_type, 'height' : _height + _height_type, 'margin' : '0 auto', 'max-width' : '100%', 'min-width' : '300px', 'max-height' : '100%' } );
 
-			var wp_mapit_map = L.map(_id).setView([ _lat, _lng], _zoom);
+			var wp_mapit_map = L.map(_id, { gestureHandling: true } ).setView([ _lat, _lng], _zoom);
 
 			var _layerImage = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 			var _attribution = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';

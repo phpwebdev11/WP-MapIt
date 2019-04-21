@@ -29,6 +29,7 @@
 			public static function wp_enqueue_scripts() {
 				wp_enqueue_style( 'wp-mapit-leaflet-css', WP_MAPIT_URL . 'css/leaflet.css' );
 				wp_enqueue_style( 'wp-mapit-leaflet-responsive-popup-css', WP_MAPIT_URL . 'css/leaflet.responsive.popup.css' );
+				wp_enqueue_style( 'wp-mapit-leaflet-gesture-handling-css', WP_MAPIT_URL . 'css/leaflet-gesture-handling.css' );
 
 				if( is_rtl() ) {
 					wp_enqueue_style( 'wp-mapit-leaflet-responsive-popup-rtl-css', WP_MAPIT_URL . 'css/leaflet.responsive.popup.rtl.css' );
@@ -37,6 +38,7 @@
 				wp_enqueue_script( 'wp-mapit-leaflet-js', WP_MAPIT_URL . 'js/leaflet.js', array( 'jquery' ) );
 				wp_enqueue_script( 'wp-mapit-leaflet-responsive-popup-js', WP_MAPIT_URL . 'js/leaflet.responsive.popup.js', array( 'jquery' ) );
 				wp_enqueue_script( 'wp-mapit-leaflet-gray-js', WP_MAPIT_URL . 'js/TileLayer.Grayscale.js', array( 'jquery' ) );
+				wp_enqueue_script( 'wp-mapit-leaflet-gesture-handling-js', WP_MAPIT_URL . 'js/leaflet-gesture-handling.js', array( 'jquery' ) );
 
 				wp_enqueue_script( 'wp-mapit-js', WP_MAPIT_URL . 'js/wp_mapit.js', array( 'jquery' ) );
 
@@ -58,6 +60,7 @@
 				wp_enqueue_style( 'wp-mapit-leaflet-css', WP_MAPIT_URL . 'css/leaflet.css' );
 				wp_enqueue_style( 'wp-mapit-css', WP_MAPIT_URL . 'css/wp_mapit_admin.css' );
 				wp_enqueue_style( 'wp-mapit-leaflet-responsive-popup-css', WP_MAPIT_URL . 'css/leaflet.responsive.popup.css' );
+				wp_enqueue_style( 'wp-mapit-leaflet-gesture-handling-css', WP_MAPIT_URL . 'css/leaflet-gesture-handling.css' );
 
 				if( is_rtl() ) {
 					wp_enqueue_style( 'wp-mapit-leaflet-responsive-popup-rtl-css', WP_MAPIT_URL . 'css/leaflet.responsive.popup.rtl.css' );
@@ -65,8 +68,9 @@
 
 				wp_enqueue_script( 'wp-mapit-leaflet-js', WP_MAPIT_URL . 'js/leaflet.js', array( 'jquery' ) );
 				wp_enqueue_script( 'wp-mapit-leaflet-gray-js', WP_MAPIT_URL . 'js/TileLayer.Grayscale.js', array( 'jquery' ) );
-				
 				wp_enqueue_script( 'wp-mapit-leaflet-responsive-popup-js', WP_MAPIT_URL . 'js/leaflet.responsive.popup.js', array( 'jquery' ) );
+				wp_enqueue_script( 'wp-mapit-leaflet-gesture-handling-js', WP_MAPIT_URL . 'js/leaflet-gesture-handling.js', array( 'jquery' ) );
+
 				wp_enqueue_script( 'wp-mapit-admin-js', WP_MAPIT_URL . 'js/wp_mapit_admin.js', array( 'jquery' ) );
 
 				wp_localize_script( 'wp-mapit-admin-js', 'wp_mapit', array( 

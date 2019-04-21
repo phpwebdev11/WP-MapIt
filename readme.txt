@@ -1,4 +1,4 @@
-=== WP MapIt ===
+﻿=== WP MapIt ===
 Contributors: phpwebdev
 Donate link: https://www.paypal.me/chandnipatel11
 Tags: wp mapit, maps, map, map marker, map pin, wordpress maps, open street maps, leaflet, free map, map plugin, wp map, no api, map widget, map shortcode, map gutenberg, open source map, osm, open street map, mapit
@@ -106,9 +106,13 @@ No. API is not required to display the map on the site.
 * [Open Street Maps](https://www.openstreetmap.org/)
 * [Ilya Zverev](https://github.com/Zverik/leaflet-grayscale)
 * [Yet Another Fred](https://github.com/yafred/leaflet-responsive-popup)
+* [elmarquis](https://github.com/elmarquis/Leaflet.GestureHandling)
 * [Veith Schoergenhummer](https://www.linkedin.com/in/vschoerg/)
 
 == Changelog ==
-
+= 1.1 :- 2019-04-09 :- Medium priority =
+* Added Gesture handling
 
 == Upgrade Notice ==
+= 1.1 =
+Please update to 1.1 as it includes Gesture handling.

@@ -187,7 +187,7 @@ jQuery( window ).load( function(){
 			wp_mapit_map_marker_image = fieldMarkerImage;
 		}		
 
-		wp_mapit_map = L.map('wp_mapit_map').setView([ _lat, _lng], wp_mapit_map_zoom);
+		wp_mapit_map = L.map('wp_mapit_map', { gestureHandling: true } ).setView([ _lat, _lng], wp_mapit_map_zoom);
 
 		wp_mapit_map.on( 'click', function(e){
 			_lat = e.latlng.lat;

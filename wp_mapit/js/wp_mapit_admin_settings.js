@@ -22,7 +22,7 @@ jQuery( window ).load( function(){
 		wp_mapit_settings_map_lng = jQuery( '#wpmi_longitude' ).val();
 		wp_mapit_settings_map_zoom = jQuery( '#wpmi_map_zoom' ).val();
 
-		wp_mapit_settings_map = L.map( 'admin_setting_map' ).setView([ wp_mapit_settings_map_lat, wp_mapit_settings_map_lng], wp_mapit_settings_map_zoom);
+		wp_mapit_settings_map = L.map( 'admin_setting_map', { gestureHandling: true } ).setView([ wp_mapit_settings_map_lat, wp_mapit_settings_map_lng], wp_mapit_settings_map_zoom);
 
 		wp_mapit_settings_map.on( 'zoomend', function() {
 			wp_mapit_settings_map_zoom = wp_mapit_settings_map.getZoom();
