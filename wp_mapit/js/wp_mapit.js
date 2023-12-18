@@ -1,4 +1,4 @@
-jQuery( window ).load( function(){
+jQuery( window ).on( 'load', function(){
 	if( jQuery( '.wp_mapit_map' ).length > 0 ) {
 		jQuery( '.wp_mapit_map' ).each( function() {
 			var _this = jQuery( this );
@@ -18,47 +18,29 @@ jQuery( window ).load( function(){
 			var _height = _this.data( 'height' );
 			var _height_type = _this.data( 'height-type' );
 
-			_this.css( { 'width' : _width + _width_type, 'height' : _height + _height_type, 'margin' : '0 auto', 'max-width' : '100%', 'min-width' : '300px', 'max-height' : '100%' } );
+			_this.css( { 'width' : _width + (_width_type == 'per' ? 'vw' : _width_type), 'height' : _height + (_height_type == 'per' ? 'vh' : _height_type), 'margin' : '0 auto', 'max-width' : '100%', 'min-width' : '300px', 'max-height' : '100%' } );
 
-			var wp_mapit_map = L.map(_id, { gestureHandling: true } ).setView([ _lat, _lng], _zoom);
+			var wp_mapit_map = L.map(_id, { fullscreenControl: true, gestureHandling: true } ).setView([ _lat, _lng], _zoom);
 
-			var _layerImage = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+			var _layerImage = '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 			var _attribution = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
 
-			var _isGray = false;
+			var _class = '';
 
 			switch( _type ) {
-				case 'normal':
-					var _layerImage = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-					var _attribution = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-					
-					break;
 				case 'grayscale':
-					/*var _layerImage = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
-					var _attribution = 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';*/
-
-					_isGray = true;
-
-					var _layerImage = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-					var _attribution = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-
+					_class = 'grayscale';
 					break;
 				case 'topographic':
-					var _layerImage = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
-					var _attribution = 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-
+					_layerImage = '//{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+					_attribution = 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)';
 					break;
 			}
 
-			if( _isGray ) {
-				wp_mapit_base_layer = L.tileLayer.grayscale(_layerImage, {
-					attribution: wp_mapit.plugin_attribution + _attribution
-				}).addTo(wp_mapit_map);
-			} else {
-				wp_mapit_base_layer = L.tileLayer(_layerImage, {
-					attribution: wp_mapit.plugin_attribution + _attribution
-				}).addTo(wp_mapit_map);
-			}
+			wp_mapit_base_layer = L.tileLayer(_layerImage, {
+				attribution: wp_mapit.plugin_attribution + _attribution,
+				className: _class
+			}).addTo(wp_mapit_map);
 
 			var _img = new Image();
 			_img.src = _marker;
@@ -97,8 +79,6 @@ jQuery( window ).load( function(){
 
 
 					if ( _html != '' ) {
-						/*_icon = jQuery( wp_mapit_map_marker._icon )[0];
-						var popup = L.responsivePopup( { offset: L.point( 0, ( _icon.clientHeight * -1 ) ) } ).setContent( _html );*/
 						var popup = L.responsivePopup( { offset: [ 20, 20 ] } ).setContent( _html );
 						wp_mapit_map_marker.bindPopup( popup );
 					}	

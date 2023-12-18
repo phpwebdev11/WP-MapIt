@@ -1,10 +1,10 @@
-﻿=== WP MapIt ===
-Contributors: phpwebdev
+=== WP MapIt ===
+Contributors: chandnipatel, nirikshapatel05
 Donate link: https://www.paypal.me/chandnipatel11
 Tags: wp mapit, maps, map, map marker, map pin, wordpress maps, open street maps, leaflet, free map, map plugin, wp map, no api, map widget, map shortcode, map gutenberg, open source map, osm, open street map, mapit
 Requires at least: 4.2
 License: GPL3
-Tested up to: 5.1
+Tested up to: 5.9
 Requires PHP: 5.4
 Stable tag: trunk
 
@@ -37,23 +37,26 @@ Choose your own images to display as markers. Decide what happens on marker clic
 * Gutenberg blocks to display map within the content.
 * Map widget functionality.
 * Shortcode functionality. 
-
-== Pro Version ==
 * Maps with multiple Marker.
+* Hooks and filters.
+* Fullscreen view.
+* CSV import for multipin map.
+* Note: Grayscale is not supported in IE apart from IE Edge.
 
 == Demos ==
-* [Map before content.](http://wp-mapit.phpwebdev.in/demos/map-before-content/)
-* [Map after content.](http://wp-mapit.phpwebdev.in/demos/map-after-content/)
-* [Map within content.](http://wp-mapit.phpwebdev.in/demos/custom-map-within-content/)
-* [Map in the sidebar.](http://wp-mapit.phpwebdev.in/demos/custom-map-sidebar/)
-* [Map with multiple pins.](http://wp-mapit.phpwebdev.in/demos/map-with-multiple-pins/)
+* [Map before content.](http://wp-mapit.chandnipatel.in/demos/map-before-content/)
+* [Map after content.](http://wp-mapit.chandnipatel.in/demos/map-after-content/)
+* [Map within content.](http://wp-mapit.chandnipatel.in/demos/custom-map-within-content/)
+* [Map in the sidebar.](http://wp-mapit.chandnipatel.in/demos/custom-map-sidebar/)
+* [Map with multiple pins.](http://wp-mapit.chandnipatel.in/demos/map-with-multiple-pins/)
+* [Hooks & Filters.](http://wp-mapit.chandnipatel.in/documentation/hooks-filters/)
 
 
 == Documentation ==
-* [Installing WP MapIt plugin.](http://wp-mapit.phpwebdev.in/documentation/installing-wp-mapit-plugin/)
-* [Setting up the plugin.](http://wp-mapit.phpwebdev.in/documentation/setting-up-the-plugin/)
-* [Displaying map on the page.](http://wp-mapit.phpwebdev.in/documentation/displaying-map-on-the-page/)
-* [Creating a multipin map (PRO).](http://wp-mapit.phpwebdev.in/documentation/creating-a-multi-pin-map-pro/)
+* [Installing WP MapIt plugin.](http://wp-mapit.chandnipatel.in/documentation/installing-wp-mapit-plugin/)
+* [Setting up the plugin.](http://wp-mapit.chandnipatel.in/documentation/setting-up-the-plugin/)
+* [Displaying map on the page.](http://wp-mapit.chandnipatel.in/documentation/displaying-map-on-the-page/)
+* [Creating a multipin map.](http://wp-mapit.chandnipatel.in/documentation/creating-a-multi-pin-map/)
 
 
 == Installation ==
@@ -85,8 +88,10 @@ Yes, open source Open street maps are used to display the Map instead of google 
 No. API is not required to display the map on the site.
 
 = I have installed the plugin, now what? =
-[Check out how to set up the plugin and add a map.](http://wp-mapit.phpwebdev.in/documentation/installing-wp-mapit-plugin/)
+[Check out how to set up the plugin and add a map.](http://wp-mapit.chandnipatel.in/documentation/installing-wp-mapit-plugin/)
 
+= Does grayscale map work on IE? =
+It works in IE Edge, it is not supported in the versions below it.
 
 == Screenshots ==
 1. Settings page.
@@ -97,22 +102,73 @@ No. API is not required to display the map on the site.
 6. WP MAPIT Gutenberg block added in the editor.
 7. Shortcode to display map in page / post.
 8. WP MAPIT Wiget.
-9. Adding map with multiple marker [pro].
-10. Adding map pin to map with multiple marker [pro].
-11. Map displayed with multiple pins [pro].
+9. Adding map with multiple marker.
+10. Adding map pin to map with multiple marker.
+11. Map displayed with multiple pins.
 
 == Credits ==
 * [Leaflet](https://leafletjs.com/)
 * [Open Street Maps](https://www.openstreetmap.org/)
-* [Ilya Zverev](https://github.com/Zverik/leaflet-grayscale)
 * [Yet Another Fred](https://github.com/yafred/leaflet-responsive-popup)
 * [elmarquis](https://github.com/elmarquis/Leaflet.GestureHandling)
 * [Veith Schoergenhummer](https://www.linkedin.com/in/vschoerg/)
+* [Mapbox - Fullscreen control](https://github.com/Leaflet/Leaflet.fullscreen)
 
 == Changelog ==
 = 1.1 :- 2019-04-09 :- Medium priority =
 * Added Gesture handling
 
+= 1.2 :- 2019-06-03 :- High priority =
+* Bugs resolution
+
+= 2.0 :- 2019-06-06 :- Medium priority =
+* Added map with multiple pins.
+
+= 2.1 :- 2019-09-12 :- Medium priority =
+* Added hooks and filters for plugin extension.
+
+= 2.2 :- 2019-09-12 :- High priority =
+* Bug resolution for grayscale issue in IE Edge.
+
+= 2.3 :- 2019-09-12 :- Normal priority =
+* Added Fullscreen map view
+
+= 2.4 :- 2020-06-13 :- Normal priority =
+* Added Translation option and CSV upload for multipin map
+
+= 2.5 :- 2020-08-24 :- Normal priority =
+* Bug fixes
+
+= 2.6 :- 2021-01-21 :- High priority =
+* Bug fixes
+
+= 2.7 :- 2021-01-21 :- High priority =
+* Bug fixes
+
+= 3.0 :- 2023-12-05 :- High priority =
+* Security bug fixes
+
 == Upgrade Notice ==
 = 1.1 =
 Please update to 1.1 as it includes Gesture handling.
+
+= 2.0 =
+Please update to 2.0 as it includes maps with multiple pins.
+
+= 2.1 =
+Please update to 2.1 as it includes hooks and filters for plugin extension.
+
+= 2.2 =
+Solved grayscale issue for IE Edge.
+
+= 2.3 =
+Please update to 2.3 as it includes Fullscreen map view.
+
+= 2.4 =
+Please update to 2.4 as it includes Translation option and CSV upload for multipin map.
+
+= 2.7 =
+Please update to 2.7 as it includes bug fixes for translation.
+
+= 3.0 =
+Please update to 3.0 as it includes security related bug fixes.

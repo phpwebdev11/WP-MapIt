@@ -122,9 +122,9 @@ function wp_mapit_set_marker(_lat, _lng) {
 		/* Set values in text fields */
 		jQuery( '#wpmi_map_latitiude' ).val( _lat );
 		jQuery( '#wpmi_map_longitude' ).val( _lng );
+		jQuery( '#wpmi_map_zoom' ).val( wp_mapit_map_zoom );
 
 		/* Add marker */
-
 		_img = new Image();
 		_img.src = wp_mapit_map_marker_image;
 		_img.onload = function() {
@@ -157,7 +157,7 @@ function wp_mapit_set_marker(_lat, _lng) {
 	}
 }
 
-jQuery( window ).load( function(){
+jQuery( window ).on( 'load', function(){
 	/* Display of map in the admin panel */
 	if( jQuery( '#wp_mapit_map' ).length > 0 ) {
 
@@ -187,7 +187,7 @@ jQuery( window ).load( function(){
 			wp_mapit_map_marker_image = fieldMarkerImage;
 		}		
 
-		wp_mapit_map = L.map('wp_mapit_map', { gestureHandling: true } ).setView([ _lat, _lng], wp_mapit_map_zoom);
+		wp_mapit_map = L.map('wp_mapit_map', { fullscreenControl: true, gestureHandling: true } ).setView([ _lat, _lng], wp_mapit_map_zoom);
 
 		wp_mapit_map.on( 'click', function(e){
 			_lat = e.latlng.lat;
@@ -195,11 +195,6 @@ jQuery( window ).load( function(){
 
 			wp_mapit_set_marker(_lat, _lng);
 		} );
-
-		/* Normal */
-		/*wp_mapit_base_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors | <a href="http://phpwebdev.in">WP MapIt</a>'
-		}).addTo(wp_mapit_map);*/
 
 		wp_mapit_map.on( 'zoomend', function() {
 			wp_mapit_map_zoom = wp_mapit_map.getZoom();
@@ -212,7 +207,8 @@ jQuery( window ).load( function(){
 
 			jQuery( '#wpmi_map_latitiude' ).val( _center.lat );
 			jQuery( '#wpmi_map_longitude' ).val( _center.lng );
-
+			jQuery( '#wpmi_map_zoom' ).val( wp_mapit_map_zoom );
+			
 		} );
 
 		/* Search location */
@@ -228,7 +224,9 @@ jQuery( window ).load( function(){
 
 				jQuery.ajax( {
 					url: wp_mapit.ajax_url,
-					data: 'action=wp_mapit_location_search&q=' + escape( jQuery( '#wpmi_search' ).val() ),
+					data: 'action=wp_mapit_location_search&q=' +
+						escape( jQuery( '#wpmi_search' ).val() ) +
+						'&wp_mapit_ajax=' + wp_mapit.ajax_nonce,
 					success: function( data ){
 						data = JSON.parse( data );
 
@@ -236,6 +234,7 @@ jQuery( window ).load( function(){
 							if( data.data['error'] != null && data.data['error']['message'] != null ) {
 								alert( data.data['error']['message'] );
 							} else {
+
 								_lat = data.data[0].lat;
 								_lng = data.data[0].lon;
 
@@ -372,7 +371,7 @@ jQuery( window ).load( function(){
 		} );
 
 		jQuery( '#wpmi_map_type' ).change( function() {
-			_layerImage = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+			_layerImage = '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 			_attribution = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
 
 			_val = jQuery.trim( jQuery( this ).val() );
@@ -381,20 +380,14 @@ jQuery( window ).load( function(){
 				_val = wp_mapit_map_type;
 			}
 
-			_isGray = false;
+			var _class = '';
 
 			switch( _val ) {
-				case 'normal':
-					_layerImage = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-					break;
 				case 'grayscale':
-					_isGray = true;
-					_layerImage = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-					//_layerImage = 'https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
-					_attribution = 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+					_class = 'grayscale';
 					break;
 				case 'topographic':
-					_layerImage = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+					_layerImage = '//{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
 					_attribution = 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)';
 			}
 
@@ -402,15 +395,10 @@ jQuery( window ).load( function(){
 				wp_mapit_map.removeLayer( wp_mapit_base_layer );
 			}
 
-			if( _isGray ) {
-				wp_mapit_base_layer = L.tileLayer.grayscale( _layerImage , {
-					attribution: wp_mapit.plugin_attribution + _attribution
-				}).addTo(wp_mapit_map);
-			} else {
-				wp_mapit_base_layer = L.tileLayer( _layerImage , {
-					attribution: wp_mapit.plugin_attribution + _attribution
-				}).addTo(wp_mapit_map);
-			}
+			wp_mapit_base_layer = L.tileLayer( _layerImage , {
+				attribution: wp_mapit.plugin_attribution + _attribution,
+				className: _class
+			}).addTo(wp_mapit_map);
 
 		} );
 

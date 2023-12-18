@@ -2,7 +2,6 @@
 	margin: 0;
 	padding: 0;
 	height: 0;
-	width: 0;
 	clear: both;
 }
 
@@ -11,6 +10,11 @@
 }
 
 #wp_mapit_map {
+    width: 100%;
+    height: 250px;
+}
+
+#wpmi_multipin_map {
     width: 100%;
     height: 250px;
 }
@@ -113,6 +117,19 @@
 	padding: 0;
 }
 
+.wp-mapit-row .column-3 {
+    width: calc( 33.33% - 10px );
+    display: block;
+    vertical-align: top;
+    padding: 0 10px 0 0;
+    float: left;
+}
+
+.wp-mapit-row .column-3.no-margin {
+	width: 33.33%;
+	padding: 0;
+}
+
 .wp-mapit-row label {
     margin: 0;
 	background: #fff;
@@ -149,6 +166,83 @@
 	vertical-align: top;
 }
 
+.pin_map {
+    height: 270px;
+}
+
+.wp-mapit-row .column-3 textarea{
+	height: 108px;
+}
+
+.wp-mapit-row.pin_container{
+	position: relative;
+}
+
+.wp-mapit-row.pin_container .remove_pin{
+	position: absolute;
+	top: -18px;
+	left: auto;
+	right: -15px;
+	background-image: url('../images/remove-pin.png');
+	background-repeat: no-repeat;
+	height: 32px;
+	width: 32px;
+	display: block; 
+}
+
+.wp-mapit-row.pin_container .map-pin-search{
+	height: 27px;
+	width: 27px;
+	background-image: url('../images/search.png');
+	background-repeat: no-repeat;
+	margin: 1px 0 0 5px;
+	background-size: 20px 20px;
+	background-position: center;
+	box-shadow: none;
+}
+
 .wp-mapit-row img{
 	max-width: 100px;
+	display: block;
+	margin: 0 0 10px;
+}
+
+.wp-mapit-row.pin-img-container img {
+    max-width: 22px;
+}
+
+#wpmi_mappin_container .wp-mapit-row:last-child {
+    margin: 0;
+}
+
+.wp-mapit-row.row-container {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.grayscale{
+	-webkit-filter: grayscale(1);
+	filter: grayscale(1);
+}
+
+.wp-mapit-metabox-container .upload_csv_file {
+	display: inline-flex;
+	align-items: center;
+}
+.wp-mapit-metabox-container .loading {
+	border: 3px solid #CCC;
+	border-radius: 50%;
+	border-top: 3px solid #0071a1;
+	width: 15px;
+	height: 15px;
+	animation: spin 2s linear infinite;
+	display: inline-block;
+	margin-left: 10px;
+}
+
+@keyframes spin {
+  	0% { transform: rotate(0deg); }
+  	100% { transform: rotate(360deg); }
 }
