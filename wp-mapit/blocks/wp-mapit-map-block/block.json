@@ -1,0 +1,14 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "wp-mapit/wp-mapit-map-block",
+    "title": "WP MAPIT",
+    "icon": "location-alt",
+    "description": "WP MAPIT block.",
+    "category": "embed",
+    "keywords": ["map"],
+    "style": "wpmi-wp-mapit-map-block-style-index-css",
+    "editorScript": "wpmi-wp-mapit-map-block-editor-script-js",
+    "editorStyle": "wpmi-wp-mapit-map-block-index-css",
+    "script": "wpmi-wp-mapit-map-block-script-js"
+}

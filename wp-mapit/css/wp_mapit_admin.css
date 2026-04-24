@@ -1,0 +1,248 @@
+.clearfix{
+	margin: 0;
+	padding: 0;
+	height: 0;
+	clear: both;
+}
+
+.text-right{
+	text-align: right;
+}
+
+#wp_mapit_map {
+    width: 100%;
+    height: 250px;
+}
+
+#wpmi_multipin_map {
+    width: 100%;
+    height: 250px;
+}
+
+.wp-mapit-metabox-container{
+	padding: 20px 0;
+}
+
+.admin-settings-map-container{
+	padding: 20px;
+}
+
+#admin_setting_map {
+    width: 100%;
+    height: 360px;
+    margin: 0 auto 10px 0;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+}
+
+#wp-mapit-settings-container{
+	width: 90%;
+	margin: 0 auto;
+}
+
+#wp-mapit-settings-container .wp-mapit-header {
+    background-color: #1d4255;
+	background-image: url('../images/logo.jpg');
+	height: 100px;
+	background-repeat: no-repeat;
+	background-position: 40px center;
+	background-size: 130px auto;
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+	margin: 0 0 20px 0;
+	padding: 10px 50px;
+	color: #ffffff;
+}
+
+#wp-mapit-settings-container .wp-mapit-header ul{
+	text-align: right;
+	margin: 40px 0 0 0;
+}
+
+#wp-mapit-settings-container .wp-mapit-header ul li {
+	display: inline-block;
+	margin: 0 10px;
+	font-size: 16px;
+}
+
+#wp-mapit-settings-container .wp-mapit-header ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#wp-mapit-settings-container .wp-mapit-content{
+	background: #ffffff;
+	box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+	padding: 20px;
+	margin: 20px 0 0 0;
+	border-radius: 3px;
+}
+
+#wp-mapit-settings-container .wp-mapit-content .wp-mapit-form{
+	width: calc(35% - 20px);
+	float: left;
+	padding: 10px
+}
+#wp-mapit-settings-container .wp-mapit-content .wp-mapit-map {
+	width: calc(65% - 20px);
+	float: left;
+	padding: 10px
+}
+
+.wp-mapit-section{
+	width: calc( 50% - 10px );
+    float: left;
+}
+
+.wp-mapit-section.left-margin{
+	margin: 0 0 0 10px;
+}
+
+.wp-mapit-section.right-margin {
+   margin: 0 10px 0 0;
+}
+
+.wp-mapit-row{
+	border: 1px solid #eee;
+	border-radius: 5px;
+	padding: 15px;
+	position: relative;
+	margin: 0 0 20px 0;
+}
+
+.wp-mapit-row.no-margin{
+	margin: 0;
+}
+
+.wp-mapit-row.button-container{
+	border: 0;
+	padding: 0;
+}
+
+.wp-mapit-row .column-3 {
+    width: calc( 33.33% - 10px );
+    display: block;
+    vertical-align: top;
+    padding: 0 10px 0 0;
+    float: left;
+}
+
+.wp-mapit-row .column-3.no-margin {
+	width: 33.33%;
+	padding: 0;
+}
+
+.wp-mapit-row label {
+    margin: 0;
+	background: #fff;
+	display: inline-block;
+	position: absolute;
+	top: -11px;
+	left: 15px;
+	font-weight: 700;
+	padding: 0 5px;
+}
+
+.wp-mapit-row input[type="text"], .wp-mapit-row input[type="number"], .wp-mapit-row input[type="url"], .wp-mapit-row select, .wp-mapit-row textarea {
+    width: 100%;
+}
+
+.wp-mapit-row ul{
+	margin: 0;
+}
+
+.wp-mapit-row .wp-mapit-search input[type="text"]{
+	width: 70%;
+	display: inline-block;
+}
+
+.wp-mapit-row .wp-mapit-size input[type="number"] {
+	width: 80%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.wp-mapit-row .wp-mapit-size select {
+	width: 15%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.pin_map {
+    height: 270px;
+}
+
+.wp-mapit-row .column-3 textarea{
+	height: 108px;
+}
+
+.wp-mapit-row.pin_container{
+	position: relative;
+}
+
+.wp-mapit-row.pin_container .remove_pin{
+	position: absolute;
+	top: -18px;
+	left: auto;
+	right: -15px;
+	background-image: url('../images/remove-pin.png');
+	background-repeat: no-repeat;
+	height: 32px;
+	width: 32px;
+	display: block; 
+}
+
+.wp-mapit-row.pin_container .map-pin-search{
+	height: 27px;
+	width: 27px;
+	background-image: url('../images/search.png');
+	background-repeat: no-repeat;
+	margin: 1px 0 0 5px;
+	background-size: 20px 20px;
+	background-position: center;
+	box-shadow: none;
+}
+
+.wp-mapit-row img{
+	max-width: 100px;
+	display: block;
+	margin: 0 0 10px;
+}
+
+.wp-mapit-row.pin-img-container img {
+    max-width: 22px;
+}
+
+#wpmi_mappin_container .wp-mapit-row:last-child {
+    margin: 0;
+}
+
+.wp-mapit-row.row-container {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.grayscale{
+	-webkit-filter: grayscale(1);
+	filter: grayscale(1);
+}
+
+.wp-mapit-metabox-container .upload_csv_file {
+	display: inline-flex;
+	align-items: center;
+}
+.wp-mapit-metabox-container .loading {
+	border: 3px solid #CCC;
+	border-radius: 50%;
+	border-top: 3px solid #0071a1;
+	width: 15px;
+	height: 15px;
+	animation: spin 2s linear infinite;
+	display: inline-block;
+	margin-left: 10px;
+}
+
+@keyframes spin {
+  	0% { transform: rotate(0deg); }
+  	100% { transform: rotate(360deg); }
+}
