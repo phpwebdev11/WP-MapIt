@@ -6,6 +6,9 @@
     "icon": "location-alt",
     "description": "WP MAPIT block.",
     "category": "embed",
+    "supports": {
+        "align": [ "wide", "full" ]
+    },
     "keywords": ["map"],
     "style": "wpmi-wp-mapit-map-block-style-index-css",
     "editorScript": "wpmi-wp-mapit-map-block-editor-script-js",
