@@ -7,11 +7,6 @@
 
 declare( strict_types = 1 );
 
-namespace WpMapit\Classes;
-
-use WP_REST_Request;
-use WpMapit\Classes\Wp_Mapit_Multipin_Map;
-
 /**
  * Exit if accessed directly
  */
@@ -124,4 +119,9 @@ if ( ! class_exists( 'Wp_Mapit_Blocks' ) ) {
 			return $content;
 		}
 	}
+
+	/**
+	 * Calling init function to activate hooks and filters.
+	 */
+	Wp_Mapit_Blocks::init();
 }

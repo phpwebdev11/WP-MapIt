@@ -5,9 +5,7 @@
  * @package wp-mapit
  */
 
-namespace WpMapit\Classes;
-
-use WpMapit\Classes\Wp_Mapit_Contextual_Map_Widget;
+declare( strict_types = 1 );
 
 /**
  * Exit if accessed directly
@@ -52,4 +50,9 @@ if ( ! class_exists( 'Wp_Mapit_Widget' ) ) {
 			register_widget( Wp_Mapit_Contextual_Map_Widget::class );
 		}
 	}
+
+	/**
+	 * Calling init function to activate hooks and filters.
+	 */
+	Wp_Mapit_Widget::init();
 }

@@ -5,7 +5,7 @@
  * @package wp-mapit
  */
 
-namespace WpMapit\Classes;
+declare( strict_types = 1 );
 
 /**
  * Exit if accessed directly

@@ -5,9 +5,7 @@
  * @package wp-mapit
  */
 
-namespace WpMapit\Classes;
-
-use WpMapit\Classes\Wp_Mapit_Admin_Settings;
+declare( strict_types = 1 );
 
 /**
  * Exit if accessed directly

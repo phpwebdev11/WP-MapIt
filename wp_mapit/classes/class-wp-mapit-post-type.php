@@ -5,7 +5,7 @@
  * @package wp-mapit
  */
 
-namespace WpMapit\Classes;
+declare( strict_types = 1 );
 
 /**
  * Exit if accessed directly
@@ -124,4 +124,9 @@ if ( ! class_exists( 'Wp_Mapit_Post_Type' ) ) {
 			}
 		}
 	}
+
+	/**
+	 * Calling init function to activate hooks and filters.
+	 */
+	Wp_Mapit_Post_Type::init();
 }

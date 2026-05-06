@@ -16,10 +16,6 @@
  * @package wp-mapit
  */
 
-namespace WpMapit;
-
-use WpMapit\Classes\Wp_Mapit;
-
 /**
  * Exit if accessed directly
  */
@@ -33,33 +29,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WP_MAPIT_DIR', plugin_dir_path( __FILE__ ) . 'wp_mapit/' );
 define( 'WP_MAPIT_URL', plugin_dir_url( __FILE__ ) . 'wp_mapit/' );
 
-/* Autoload class files */
-spl_autoload_register(
-	function ( $class_name ) {
-		$class_file = str_replace(
-			array( '_' ),
-			array( '-' ),
-			$class_name
-		);
-
-		$class_file = strtolower(
-			str_replace(
-				array( 'WpMapit\\', '\\' ),
-				array( WP_MAPIT_DIR, '/' ),
-				$class_file
-			)
-		) . '.php';
-
-		$pos = strrpos( $class_file, '/' );
-		if ( false !== $pos ) {
-			$class_file = substr_replace( $class_file, '/class-', $pos, 1 );
-		}
-
-		if ( file_exists( $class_file ) ) {
-			require_once $class_file;
-		}
-	}
-);
+/**
+ * Include the core file of the plugin
+ */
+require_once WP_MAPIT_DIR . 'classes/class-wp-mapit.php';
 
 if ( ! function_exists( 'wp_mapit_init' ) ) {
 
@@ -79,7 +52,7 @@ if ( ! function_exists( 'wp_mapit_init' ) ) {
 /**
  * Create the main object of the plugin when the plugins are loaded
  */
-add_action( 'plugins_loaded', 'WpMapit\wp_mapit_init' );
+add_action( 'plugins_loaded', 'wp_mapit_init' );
 
 add_action(
 	'init',

@@ -5,7 +5,7 @@
  * @package wp-mapit
  */
 
-namespace WpMapit\Classes;
+declare( strict_types = 1 );
 
 /**
  * Exit if accessed directly
@@ -63,16 +63,21 @@ if ( ! class_exists( 'Wp_Mapit' ) ) {
 		 * @access private
 		 */
 		private static function include_plugin_files() {
-			Wp_Mapit_Admin_Settings::init();
-			Wp_Mapit_Scripts::init();
-			Wp_Mapit_Metabox::init();
-			Wp_Mapit_Admin_Ajax::init();
-			Wp_Mapit_The_Content::init();
-			Wp_Mapit_Shortcode::init();
-			Wp_Mapit_Gutenberg_Block::init();
-			Wp_Mapit_Widget::init();
-			Wp_Mapit_Post_Type::init();
-			Wp_Mapit_Blocks::init();
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-admin-settings.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-scripts.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-metabox.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-the-content.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-admin-ajax.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-shortcode.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-gutenberg-block.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-widget.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-post-type.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-blocks.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-contextual-map-widget.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-create-metabox.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-functions.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-multipin-map.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-map.php';
 		}
 	}
 }

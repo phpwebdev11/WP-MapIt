@@ -5,10 +5,7 @@
  * @package wp-mapit
  */
 
-namespace WpMapit\Classes;
-
-use WpMapit\Classes\Wp_Mapit_Multipin_Map;
-use WpMapit\Classes\Wp_Mapit_Map;
+declare( strict_types = 1 );
 
 /**
  * Exit if accessed directly
@@ -83,4 +80,9 @@ if ( ! class_exists( 'Wp_Mapit_Shortcode' ) ) {
 			}
 		}
 	}
+
+	/**
+	 * Calling init function to activate hooks and filters.
+	 */
+	Wp_Mapit_Shortcode::init();
 }

@@ -5,7 +5,7 @@
  * @package wp-mapit
  */
 
-namespace WpMapit\Classes;
+declare( strict_types = 1 );
 
 /**
  * Exit if accessed directly
@@ -30,7 +30,7 @@ if ( ! class_exists( 'Wp_Mapit_Functions' ) ) {
 		 */
 		public static function generate_random_string( $length = 10 ) {
 			$x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-			return substr( str_shuffle( str_repeat( $x, ceil( $length / strlen( $x ) ) ) ), 1, $length );
+			return substr( str_shuffle( str_repeat( $x, (int) ceil( $length / strlen( $x ) ) ) ), 1, $length );
 		}
 	}
 }

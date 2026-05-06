@@ -5,10 +5,7 @@
  * @package wp-mapit
  */
 
-namespace WpMapit\Classes;
-
-use WpMapit\Classes\Wp_Mapit_Create_Metabox;
-use WpMapit\Classes\Wp_Mapit_Admin_Settings;
+declare( strict_types = 1 );
 
 /**
  * Exit if accessed directly
@@ -296,4 +293,9 @@ if ( ! class_exists( 'Wp_Mapit_Metabox' ) ) {
 			new wp_mapit_create_metabox( 'wp-mapit-metabox-pins', __( 'WP MapIt Map Pins', 'wp-mapit' ), $arr_map_multi_metabox_pin_fields, 'wp_mapit_map', true );
 		}
 	}
+
+	/**
+	 * Calling init function to activate hooks and filters.
+	 */
+	Wp_Mapit_Metabox::init();
 }
