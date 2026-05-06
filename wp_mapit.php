@@ -30,17 +30,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Define constants used in the plugin
  */
-define( 'WP_MAPIT_DIR', plugin_dir_path( __FILE__ ) . 'wp-mapit/' );
-define( 'WP_MAPIT_URL', plugin_dir_url( __FILE__ ) . 'wp-mapit/' );
+define( 'WP_MAPIT_DIR', plugin_dir_path( __FILE__ ) . 'wp_mapit/' );
+define( 'WP_MAPIT_URL', plugin_dir_url( __FILE__ ) . 'wp_mapit/' );
 
 /* Autoload class files */
 spl_autoload_register(
 	function ( $class_name ) {
+		$class_file = str_replace(
+			array( '_' ),
+			array( '-' ),
+			$class_name
+		);
+
 		$class_file = strtolower(
 			str_replace(
-				array( 'WpMapit\\', '\\', '_' ),
-				array( WP_MAPIT_DIR, '/', '-' ),
-				$class_name
+				array( 'WpMapit\\', '\\' ),
+				array( WP_MAPIT_DIR, '/' ),
+				$class_file
 			)
 		) . '.php';
 
