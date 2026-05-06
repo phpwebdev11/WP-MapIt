@@ -9,7 +9,7 @@
  * Developer: Chandni Patel
  * Developer URI: http://chandnipatel.in/
  * Text Domain: wp-mapit
- * Domain Path: /wp-mapit/languages
+ * Domain Path: /wp_mapit/languages
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  *
