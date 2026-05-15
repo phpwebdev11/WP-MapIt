@@ -6,7 +6,7 @@ Requires at least: 4.2
 License: GPL3
 Tested up to: 6.9
 Requires PHP: 5.4
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 
 Easy to use, WordPress Map plugin based on Open Street Map and Leaflet with custom markers images, descriptions and links.
 
@@ -160,6 +160,9 @@ It works in IE Edge, it is not supported in the versions below it.
 = 3.1.0 :- 2026-04-29 :- High priority =
 * Bug fixes
 
+= 3.1.1 :- 2026-05-12 :- High priority =
+* Bug fixes
+
 == Upgrade Notice ==
 = 1.1 =
 Please update to 1.1 as it includes Gesture handling.
@@ -196,3 +199,6 @@ Please update to 3.0.3 as it includes bug fixes.
 
 = 3.1.0 =
 Please update to 3.1.0 as it includes bug fixes.
+
+= 3.1.1 =
+Please update to 3.1.1 as it includes bug fixes.
