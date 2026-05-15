@@ -36,6 +36,15 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Ajax' ) ) {
 					'wp_mapit_location_search',
 				),
 			);
+
+			/* To get tag list, display as options when new pin is added */
+			add_action(
+				'wp_ajax_wp_mapit_get_tags',
+				array(
+					__CLASS__,
+					'wp_mapit_get_tags',
+				),
+			);
 		}
 
 		/**
@@ -93,6 +102,65 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Ajax' ) ) {
 				)
 			);
 			die();
+		}
+
+		/**
+		 * Hook to handle wp_mapit_get_tags ajax call
+		 *
+		 * @since 3.2.0
+		 * @static
+		 * @access public
+		 */
+		public static function wp_mapit_get_tags() {
+
+			// Capability check.
+			if ( ! current_user_can( 'manage_options' ) ) {
+				echo wp_json_encode(
+					array(
+						'status'  => '0',
+						'message' => __( 'Unauthorized', 'wp-mapit' ),
+					)
+				);
+				die();
+			}
+
+			if ( check_ajax_referer( 'wp_mapit_admin_ajax_nonce', 'wp_mapit_ajax' ) ) {
+				echo self::get_tags_field_html();
+			}
+			die();
+		}
+
+		/**
+		 * Generate the tags select field HTML.
+		 *
+		 * @since 3.2.0
+		 * @static
+		 * @access private
+		 *
+		 * @param array $selected_tags Optional selected term IDs.
+		 * @return string HTML for the tags select field.
+		 */
+		private static function get_tags_field_html( array $selected_tags = array() ) {
+			$terms = get_terms(
+				array(
+					'taxonomy'   => 'wp_mapit_tag',
+					'hide_empty' => false,
+				)
+			);
+
+			$html = '<div class="wp-mapit-row"><label>' . esc_html__( 'Tags', 'wp-mapit' ) . '</label>';
+			$html .= '<select class="wp-mapit-select2" name="__TAG_FIELD_NAME__" multiple="multiple" data-placeholder="' . esc_attr__( 'Select Tags', 'wp-mapit' ) . '">';
+
+			if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+				foreach ( $terms as $term ) {
+					$selected_attr = in_array( $term->term_id, $selected_tags, true ) ? ' selected="selected"' : '';
+					$html         .= '<option value="' . esc_attr( $term->term_id ) . '"' . $selected_attr . '>' . esc_html( $term->name ) . '</option>';
+				}
+			}
+
+			$html .= '</select></div>';
+
+			return $html;
 		}
 	}
 

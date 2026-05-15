@@ -6,7 +6,7 @@ Requires at least: 4.2
 License: GPL3
 Tested up to: 6.9
 Requires PHP: 5.4
-Stable tag: 3.1.1
+Stable tag: 3.2.0
 
 Easy to use, WordPress Map plugin based on Open Street Map and Leaflet with custom markers images, descriptions and links.
 

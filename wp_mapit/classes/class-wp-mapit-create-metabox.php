@@ -110,6 +110,10 @@ if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 			wp_nonce_field( 'wp_mapit_metabox', 'wp_mapit_metabox_nonce' );
 
 			if ( is_array( $this->fields ) && count( $this->fields ) > 0 ) {
+				$terms = get_terms(array(
+					'taxonomy'   => 'wp_mapit_tag',
+					'hide_empty' => false,
+				));
 				?>
 				<div class="wp-mapit-metabox-container">
 					<?php
@@ -215,6 +219,24 @@ if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 															}
 															?>
 															<a href="#" class="upload_image button"><?php esc_html_e( 'Choose Image', 'wp-mapit' ); ?></a><span>&nbsp;</span><a href="#" class="remove_image button"><?php esc_html_e( 'Remove Image', 'wp-mapit' ); ?></a>
+														</div>
+														<div class="wp-mapit-row">
+															<label><?php esc_html_e( 'Tags', 'wp-mapit' ); ?></label>
+															<select class="wp-mapit-select2" name="<?php echo esc_attr( $field['id'] ); ?>[<?php echo esc_attr( $pin_cnt ); ?>][tags][]" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select Tags', 'wp-mapit' ); ?>">
+																<?php
+																$wp_mapit_tags = isset( $pin['tags'] ) ? $pin['tags'] : array();
+																if ( is_array( $terms ) && count( $terms ) > 0 ) {
+																	foreach ( $terms as $term ) {
+																		$term_id = $term->term_id ?? 0;
+																		?>
+																			<option value="<?php echo esc_attr( $term_id ); ?>" <?php selected( in_array( $term_id, $wp_mapit_tags, true ) ); ?>>
+																				<?php echo esc_html( $term->name ?? '' ); ?>
+																			</option>
+																		<?php
+																	}
+																}
+																?>
+															</select>
 														</div>
 													</div>
 													<div class="column-3">
@@ -469,6 +491,7 @@ if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 										'marker_title'   => isset( $item['marker_title'] ) ? sanitize_text_field( wp_unslash( $item['marker_title'] ) ) : '',
 										'marker_content' => isset( $item['marker_content'] ) ? wp_kses_post( wp_unslash( $item['marker_content'] ) ) : '',
 										'marker_url'     => isset( $item['marker_url'] ) ? esc_url_raw( wp_unslash( $item['marker_url'] ) ) : '',
+										'tags'           => isset( $item['tags'] ) ? array_map( 'intval', $item['tags'] ) : array(),
 									);
 
 								}

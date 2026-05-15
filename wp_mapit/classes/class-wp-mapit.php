@@ -78,6 +78,7 @@ if ( ! class_exists( 'Wp_Mapit' ) ) {
 			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-functions.php';
 			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-multipin-map.php';
 			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-map.php';
+			require_once WP_MAPIT_DIR . 'classes/class-wp-mapit-taxonomy.php';
 		}
 	}
 }

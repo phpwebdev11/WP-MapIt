@@ -151,6 +151,23 @@ if ( ! class_exists( 'Wp_Mapit_Scripts' ) ) {
 					)
 				);
 			}
+
+			// Enqueue select2 css as it's used in admin for map tags input.
+			wp_enqueue_style(
+				'select2',
+				'//cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css',
+				array(),
+				'4.1.0'
+			);
+
+			// Enqueue select2 js as it's used in admin for map tags input.
+			wp_enqueue_script(
+				'select2',
+				'//cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
+				array( 'jquery' ),
+				'4.1.0',
+				true
+			);
 		}
 	}
 

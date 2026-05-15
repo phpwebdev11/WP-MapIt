@@ -2,7 +2,7 @@
 	const __ = i18n.__;
 	const el = element.createElement;
 	const { useBlockProps, InspectorControls } = window.wp.blockEditor;
-	const { PanelBody, PanelRow, SelectControl } = window.wp.components;
+	const { PanelBody, PanelRow, SelectControl, ComboboxControl } = window.wp.components;
 	const { useEffect, useState, RawHTML } = wp.element;
 	const { useSelect } = wp.data;
 	const apiFetch = wp.apiFetch;
@@ -24,6 +24,10 @@
 			wp_mapit_map: {
 				type: 'string',
 			},
+			tags: {
+				type: "array",
+				default: []
+			}
 		},
 		edit( props ) {
 			const { attributes, setAttributes } = props;
@@ -51,7 +55,7 @@
 
 			/* Get posts for selection */
 			const postsArr = useSelect( ( select ) => {
-			    return select('core').getEntityRecords( 'postType', 'wp_mapit_map', { per_page: -1 } );
+			    return select( 'core' ).getEntityRecords( 'postType', 'wp_mapit_map', { per_page: -1 } );
 			}, [] );
 			if ( postsArr ) {
 				postsArr.forEach( ( post ) => {
@@ -62,6 +66,11 @@
 					}
 				} );
 			}
+
+			// Get tags for selection.
+			const tags = useSelect( ( select ) => {
+				return select( 'core' ).getEntityRecords( 'taxonomy', 'wp_mapit_tag' );
+			}, [] );
 
 			return (
 				el( 'div',
@@ -85,6 +94,17 @@
 									onChange( value ) {
 										setAttributes( { wp_mapit_map: value } );
 									},
+								},
+							),
+							el( ComboboxControl,
+								{
+									label: __( 'Tags', 'wp-mapit' ),
+									value: attributes.tags,
+									options: tags ? tags.map( ( tag ) => ( { value: tag.id, label: tag.name } ) ) : [],
+									onChange( value ) {
+										setAttributes( { tags: value } );
+									},
+									multiple: true,
 								},
 							),
 						),

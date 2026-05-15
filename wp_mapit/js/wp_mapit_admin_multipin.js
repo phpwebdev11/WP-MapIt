@@ -560,6 +560,28 @@ jQuery( window ).on( 'load', function(){
 			jQuery('#wpmi_mappin_container').html('');
 		});
 
+		/* Get tag lists */
+		function getTagList() {
+			var response = null;
+
+			jQuery.ajax( {
+				url: wp_mapit.ajax_url,
+				type: 'POST',
+				dataType: 'text',
+				async: false,
+				data: 'action=wp_mapit_get_tags' +
+					'&wp_mapit_ajax=' + wp_mapit.ajax_nonce,
+				success: function( html ) {
+					response = html;
+				},
+				error: function() {
+					response = '';
+				}
+			} );
+
+			return response;
+		}
+
 		// For multipin block
 		function multipinFunc (pin_data=[]){
 
@@ -567,6 +589,12 @@ jQuery( window ).on( 'load', function(){
 			_counter = _this.data( 'counter' );
 			_this.data( 'counter', _counter + 1 );
 			_pinid = _this.data( 'pinid' );
+
+			// Get tag list and replace field name placeholder with actual field name for the new pin.
+			tagsOptions = getTagList();
+			if ( tagsOptions ) {
+				tagsOptions = tagsOptions.replace( /__TAG_FIELD_NAME__/g, _pinid + '[' + _counter + '][tags][]' );
+			}
 			
 			_pinContainer = jQuery( '<div>' ).attr( 'id', 'pin_container_' + _counter ).addClass( 'wp-mapit-row pin_container' );
 
@@ -607,7 +635,7 @@ jQuery( window ).on( 'load', function(){
 					).append(
 						jQuery( '<a>' ).attr( 'href', '#' ).text( wp_mapit_multipin.remove_image_text ).addClass( 'remove_image button' )
 					)
-				)
+				).append( tagsOptions )
 			).append(
 				jQuery( '<div>' ).addClass( 'column-3' ).append(
 					jQuery( '<div>' ).addClass( 'wp-mapit-row' ).append(
@@ -641,6 +669,9 @@ jQuery( window ).on( 'load', function(){
 			);
 
 			jQuery( '#wpmi_mappin_container' ).append( _pinContainer );
+
+			/* Initialize Select2 for the new tag field */
+			tagsAutoComplete();
 
 			wp_mapit_mappin_pins[_counter] = {};
 			
@@ -678,6 +709,18 @@ jQuery( window ).on( 'load', function(){
 			    }, 2000);
 		    }
 		}
+
+		/* Initialize Select2 for existing tag fields */
+		function tagsAutoComplete( counter ) {
+			jQuery( '.wp-mapit-select2' ).select2( {
+				placeholder: 'Select tags',
+				allowClear: true
+			} );
+		}
+
+		// Initialize Select2 for existing tag fields on page load.
+		tagsAutoComplete();
+
 	}
 
 });

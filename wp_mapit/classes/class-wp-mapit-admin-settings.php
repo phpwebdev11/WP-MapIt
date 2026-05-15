@@ -123,6 +123,15 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Settings' ) ) {
 				'edit.php?post_type=wp_mapit_map'
 			);
 
+			// Add Map Tags submenu under WP MapIt menu.
+			add_submenu_page(
+				'wp_mapit',
+				__( 'Tags', 'wp-mapit' ),
+				__( 'Tags', 'wp-mapit' ),
+				'manage_categories',
+				'edit-tags.php?taxonomy=wp_mapit_tag&post_type=wp_mapit_map'
+			);
+
 			add_submenu_page(
 				'wp_mapit',
 				__( 'Settings', 'wp-mapit' ),
