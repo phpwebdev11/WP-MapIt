@@ -560,24 +560,32 @@ jQuery( window ).on( 'load', function(){
 			jQuery('#wpmi_mappin_container').html('');
 		});
 
-		/* Get tag lists */
-		function getTagList() {
+		/* Get tag options */
+		function getTagOptions( _this ) {
+			var counter = _this.data( 'counter' );
+			var pinid = _this.data( 'pinid' );
+			
 			var response = null;
+			if( ! _this.hasClass('disbaled') ) {
+				_this.addClass( 'disbaled' );
 
-			jQuery.ajax( {
-				url: wp_mapit.ajax_url,
-				type: 'POST',
-				dataType: 'text',
-				async: false,
-				data: 'action=wp_mapit_get_tags' +
-					'&wp_mapit_ajax=' + wp_mapit.ajax_nonce,
-				success: function( html ) {
-					response = html;
-				},
-				error: function() {
-					response = '';
-				}
-			} );
+				jQuery.ajax( {
+					url: wp_mapit.ajax_url,
+					type: 'POST',
+					async: false,
+					data: 'action=wp_mapit_get_tags' +
+						'&base_key=' + pinid +
+						'&counter=' + counter +
+						'&wp_mapit_ajax=' + wp_mapit.ajax_nonce,
+					success: function( html ) {
+						response = html;
+						_this.removeClass( 'disbaled' );
+					},
+					error: function() {
+						_this.removeClass( 'disbaled' );
+					}
+				} );
+			}
 
 			return response;
 		}
@@ -590,11 +598,8 @@ jQuery( window ).on( 'load', function(){
 			_this.data( 'counter', _counter + 1 );
 			_pinid = _this.data( 'pinid' );
 
-			// Get tag list and replace field name placeholder with actual field name for the new pin.
-			tagsOptions = getTagList();
-			if ( tagsOptions ) {
-				tagsOptions = tagsOptions.replace( /__TAG_FIELD_NAME__/g, _pinid + '[' + _counter + '][tags][]' );
-			}
+			// Get tag options for the new pin.
+			tagsOptions = getTagOptions( _this );
 			
 			_pinContainer = jQuery( '<div>' ).attr( 'id', 'pin_container_' + _counter ).addClass( 'wp-mapit-row pin_container' );
 
@@ -711,14 +716,16 @@ jQuery( window ).on( 'load', function(){
 		}
 
 		/* Initialize Select2 for existing tag fields */
-		function tagsAutoComplete( counter ) {
-			jQuery( '.wp-mapit-select2' ).select2( {
-				placeholder: 'Select tags',
-				allowClear: true
-			} );
+		function tagsAutoComplete() {
+			if( jQuery( '.wp-mapit-select2' ).length > 0 ) {
+				jQuery( '.wp-mapit-select2' ).select2( {
+					placeholder: 'Select tags',
+					allowClear: true
+				} );
+			}
 		}
 
-		// Initialize Select2 for existing tag fields on page load.
+		/* Initialize Select2 for existing tag fields on page load. */
 		tagsAutoComplete();
 
 	}

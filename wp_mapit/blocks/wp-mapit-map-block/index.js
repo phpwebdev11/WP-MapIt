@@ -2,7 +2,7 @@
 	const __ = i18n.__;
 	const el = element.createElement;
 	const { useBlockProps, InspectorControls } = window.wp.blockEditor;
-	const { PanelBody, PanelRow, SelectControl, ComboboxControl } = window.wp.components;
+	const { PanelBody, PanelRow, SelectControl } = window.wp.components;
 	const { useEffect, useState, RawHTML } = wp.element;
 	const { useSelect } = wp.data;
 	const apiFetch = wp.apiFetch;
@@ -69,7 +69,31 @@
 
 			// Get tags for selection.
 			const tags = useSelect( ( select ) => {
-				return select( 'core' ).getEntityRecords( 'taxonomy', 'wp_mapit_tag' );
+				return select( 'core' ).getEntityRecords( 'taxonomy', 'wp_mapit_tag', { per_page: -1, } );
+			}, [] );
+
+			// Map tags options for SelectControl.
+			const tagOptions = ( tags || [] ).map( ( tag ) => ( { label: tag.name, value: tag.id, } ) );
+
+			// Load Select2 and initialize it on the tag select element after a delay to ensure the element is rendered.
+			useEffect( () => {
+				setTimeout( () => {
+					const tagSelect = jQuery( '.wp-mapit-select2 select' );
+
+					if ( tagSelect.length ) {
+						// Initialize Select2 on the tag select element.
+						tagSelect.select2( {
+							placeholder: __( 'Select Tags', 'wp-mapit' ),
+						} );
+
+						// On change event for the tag selection to update block attributes.
+						tagSelect.on( 'change', function () {
+							setAttributes( {
+								tags: jQuery( this ).val() || [],
+							} );
+						} );
+					}
+				}, 4000 );
 			}, [] );
 
 			return (
@@ -96,15 +120,14 @@
 									},
 								},
 							),
-							el( ComboboxControl,
+							el( SelectControl,
 								{
 									label: __( 'Tags', 'wp-mapit' ),
 									value: attributes.tags,
-									options: tags ? tags.map( ( tag ) => ( { value: tag.id, label: tag.name } ) ) : [],
-									onChange( value ) {
-										setAttributes( { tags: value } );
-									},
+									options: tagOptions,
+									className: 'wp-mapit-select2',
 									multiple: true,
+									onChange() {},
 								},
 							),
 						),

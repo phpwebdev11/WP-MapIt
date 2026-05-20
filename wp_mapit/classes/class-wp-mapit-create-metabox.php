@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Access Denied' );
 }
 
+use Wp_Mapit_Admin_Ajax;
+
 if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 	/**
 	 * Class to manage metabox creation for WP MapIt
@@ -110,10 +112,6 @@ if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 			wp_nonce_field( 'wp_mapit_metabox', 'wp_mapit_metabox_nonce' );
 
 			if ( is_array( $this->fields ) && count( $this->fields ) > 0 ) {
-				$terms = get_terms(array(
-					'taxonomy'   => 'wp_mapit_tag',
-					'hide_empty' => false,
-				));
 				?>
 				<div class="wp-mapit-metabox-container">
 					<?php
@@ -220,24 +218,10 @@ if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 															?>
 															<a href="#" class="upload_image button"><?php esc_html_e( 'Choose Image', 'wp-mapit' ); ?></a><span>&nbsp;</span><a href="#" class="remove_image button"><?php esc_html_e( 'Remove Image', 'wp-mapit' ); ?></a>
 														</div>
-														<div class="wp-mapit-row">
-															<label><?php esc_html_e( 'Tags', 'wp-mapit' ); ?></label>
-															<select class="wp-mapit-select2" name="<?php echo esc_attr( $field['id'] ); ?>[<?php echo esc_attr( $pin_cnt ); ?>][tags][]" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select Tags', 'wp-mapit' ); ?>">
-																<?php
-																$wp_mapit_tags = isset( $pin['tags'] ) ? $pin['tags'] : array();
-																if ( is_array( $terms ) && count( $terms ) > 0 ) {
-																	foreach ( $terms as $term ) {
-																		$term_id = $term->term_id ?? 0;
-																		?>
-																			<option value="<?php echo esc_attr( $term_id ); ?>" <?php selected( in_array( $term_id, $wp_mapit_tags, true ) ); ?>>
-																				<?php echo esc_html( $term->name ?? '' ); ?>
-																			</option>
-																		<?php
-																	}
-																}
-																?>
-															</select>
-														</div>
+														<?php
+															$pin_tags = isset( $pin['tags'] ) ? $pin['tags'] : array();
+															echo Wp_Mapit_Admin_Ajax::get_tags_field_html( $field['id'], $pin_cnt, $pin_tags );
+														?>
 													</div>
 													<div class="column-3">
 														<div class="wp-mapit-row">

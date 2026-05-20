@@ -124,9 +124,21 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Ajax' ) ) {
 				die();
 			}
 
-			if ( check_ajax_referer( 'wp_mapit_admin_ajax_nonce', 'wp_mapit_ajax' ) ) {
-				echo self::get_tags_field_html();
+			// Check nonce for security.
+			if ( ! check_ajax_referer( 'wp_mapit_admin_ajax_nonce', 'wp_mapit_ajax' ) ) {
+				echo wp_json_encode(
+					array(
+						'status'  => '0',
+						'message' => __( 'Invalid request.', 'wp-mapit' ),
+					)
+				);
+				die();
 			}
+
+			// Get the tags field HTML.
+			$base_key = isset( $_POST['base_key'] ) ? sanitize_text_field( wp_unslash( $_POST['base_key'] ) ) : '';
+			$index    = isset( $_POST['index'] ) ? sanitize_text_field( wp_unslash( $_POST['index'] ) ) : 0;
+			echo self::get_tags_field_html( $base_key, $index );
 			die();
 		}
 
@@ -135,32 +147,42 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Ajax' ) ) {
 		 *
 		 * @since 3.2.0
 		 * @static
-		 * @access private
+		 * @access public
 		 *
+		 * @param string $base_key The base name for the select field.
+		 * @param int    $index The index to differentiate multiple fields.
 		 * @param array $selected_tags Optional selected term IDs.
 		 * @return string HTML for the tags select field.
 		 */
-		private static function get_tags_field_html( array $selected_tags = array() ) {
+		public static function get_tags_field_html( string $base_key, int $index, array $selected_tags = array() ) {
+			ob_start();
+
 			$terms = get_terms(
 				array(
 					'taxonomy'   => 'wp_mapit_tag',
 					'hide_empty' => false,
 				)
 			);
+			?>
 
-			$html = '<div class="wp-mapit-row"><label>' . esc_html__( 'Tags', 'wp-mapit' ) . '</label>';
-			$html .= '<select class="wp-mapit-select2" name="__TAG_FIELD_NAME__" multiple="multiple" data-placeholder="' . esc_attr__( 'Select Tags', 'wp-mapit' ) . '">';
+			<div class="wp-mapit-row">
+				<label><?php echo esc_html__( 'Tags', 'wp-mapit' ); ?></label>
+				<select class="wp-mapit-select2" name="<?php echo esc_attr( $base_key ); ?>[<?php echo esc_attr( $index ); ?>][tags][]" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select Tags', 'wp-mapit' ); ?>">
+					<?php
+					if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+						foreach ( $terms as $term ) {
+							$term_id = $term->term_id ?? 0;
+							?>
+							<option value="<?php echo esc_attr( $term_id ); ?>"<?php selected( in_array( $term_id, $selected_tags, true ) ); ?>><?php echo esc_html( $term->name ?? '' ); ?></option>
+							<?php
+						}
+					}
+					?>
+				</select>
+			</div>
+			<?php
 
-			if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
-				foreach ( $terms as $term ) {
-					$selected_attr = in_array( $term->term_id, $selected_tags, true ) ? ' selected="selected"' : '';
-					$html         .= '<option value="' . esc_attr( $term->term_id ) . '"' . $selected_attr . '>' . esc_html( $term->name ) . '</option>';
-				}
-			}
-
-			$html .= '</select></div>';
-
-			return $html;
+			return (string) ob_get_clean();
 		}
 	}
 
