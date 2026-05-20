@@ -61,6 +61,17 @@ if ( ! class_exists( 'Wp_Mapit_Blocks' ) ) {
 					'permission_callback' => '__return_true',
 				)
 			);
+
+			// To get tags by map post.
+			register_rest_route(
+				'wp/v2',
+				'/get_tags_by_post',
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( __CLASS__, 'get_tags_by_post' ),
+					'permission_callback' => '__return_true',
+				)
+			);
 		}
 
 		/**
@@ -87,6 +98,52 @@ if ( ! class_exists( 'Wp_Mapit_Blocks' ) ) {
 
 			$content = ob_get_clean();
 			return $content;
+		}
+
+		/**
+		 * Function to handle callback for wp mapit block api.
+		 * To get tags by map post.
+		 *
+		 * @since 3.2.0
+		 * @static
+		 * @access public
+		 *
+		 * @param array $request array of attributes.
+		 * @return string JSON encoded array of tags.
+		 */
+		public static function get_tags_by_post( $request ): string {
+			$map_id = (int) ( isset( $request['map_post'] ) ? $request['map_post'] : 0 );
+			
+			$tag_data = array();
+			if ( 0 !== $map_id ) {
+				// Get the tags for the selected map post.
+				$post_tags = array();
+				$pins = Wp_Mapit_Multipin_Map::get_map_pins( $map_id );
+				if ( is_array( $pins ) && count( $pins ) > 0 ) {
+					foreach ( $pins as $pin ) {
+						$pin_tags = isset( $pin['tags'] ) ? (array) $pin['tags'] : array();
+						$pin_tags = array_map( 'intval', $pin_tags );
+						$post_tags = array_merge( $post_tags, $pin_tags );
+					}
+				}
+
+				$post_tags = array_unique( $post_tags ); // Get unique tag IDs.
+
+				// Create tags array.
+				if ( is_array( $post_tags ) && count( $post_tags ) > 0 ) {
+					foreach ( $post_tags as $tag_id ) {
+						$tag = get_term( $tag_id, 'wp_mapit_tag' );
+						if ( $tag && ! is_wp_error( $tag ) ) {
+							$tag_data[] = array(
+								'id'   => $tag->term_id ?? 0,
+								'name' => $tag->name ?? '',
+							);
+						}
+					}
+				}
+			}
+
+			return wp_json_encode( $tag_data );
 		}
 
 		/**
