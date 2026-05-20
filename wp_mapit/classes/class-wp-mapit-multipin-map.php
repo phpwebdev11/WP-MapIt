@@ -178,12 +178,30 @@ if ( ! class_exists( 'Wp_Mapit_Multipin_Map' ) ) {
 		 * @static
 		 * @access public
 		 * @param Int $post_id Id of the post.
+		 * @param array $tags Optional array of tag IDs to filter pins.
 		 * @return string Returns the map's markup as per the map id
 		 */
-		public static function generate_map( $post_id ) {
+		public static function generate_map( $post_id, $tags = array() ) {
 			ob_start();
+            
+			// Get pins and optionally filter by tags.
+			$pins = self::get_map_pins( $post_id );
+			if ( is_array( $tags ) && count( $tags ) > 0 ) {
+				$wanted = array_map( 'intval', $tags );
+				$filtered = array();
+				if ( is_array( $pins ) && count( $pins ) > 0 ) {
+					foreach ( $pins as $pin ) {
+						$pin_tags = isset( $pin['tags'] ) ? (array) $pin['tags'] : array();
+						$pin_tags = array_map( 'intval', $pin_tags );
+						if ( count( array_intersect( $pin_tags, $wanted ) ) > 0 ) {
+							$filtered[] = $pin;
+						}
+					}
+					$pins = $filtered;
+				}
+			}
 			?>
-				<div id="wp_mapit_<?php echo esc_attr( wp_mapit_functions::generate_random_string() ); ?>" class="wp_mapit_multipin_map" data-lat="<?php echo esc_attr( self::get_map_latitude( $post_id ) ); ?>" data-lng="<?php echo esc_attr( self::get_map_longitude( $post_id ) ); ?>" data-zoom="<?php echo esc_attr( self::get_map_zoom( $post_id ) ); ?>" data-type="<?php echo esc_attr( self::get_map_type( $post_id ) ); ?>" data-marker="<?php echo esc_url( self::get_map_marker( $post_id ) ); ?>" data-width="<?php echo esc_attr( self::get_map_width( $post_id ) ); ?>" data-width-type="<?php echo esc_attr( self::get_map_width_type( $post_id ) ); ?>" data-height="<?php echo esc_attr( self::get_map_height( $post_id ) ); ?>" data-height-type="<?php echo esc_attr( self::get_map_height_type( $post_id ) ); ?>" data-pins="<?php echo esc_html( htmlentities( wp_json_encode( self::get_map_pins( $post_id ) ) ) ); ?>"></div>
+				<div id="wp_mapit_<?php echo esc_attr( wp_mapit_functions::generate_random_string() ); ?>" class="wp_mapit_multipin_map" data-lat="<?php echo esc_attr( self::get_map_latitude( $post_id ) ); ?>" data-lng="<?php echo esc_attr( self::get_map_longitude( $post_id ) ); ?>" data-zoom="<?php echo esc_attr( self::get_map_zoom( $post_id ) ); ?>" data-type="<?php echo esc_attr( self::get_map_type( $post_id ) ); ?>" data-marker="<?php echo esc_url( self::get_map_marker( $post_id ) ); ?>" data-width="<?php echo esc_attr( self::get_map_width( $post_id ) ); ?>" data-width-type="<?php echo esc_attr( self::get_map_width_type( $post_id ) ); ?>" data-height="<?php echo esc_attr( self::get_map_height( $post_id ) ); ?>" data-height-type="<?php echo esc_attr( self::get_map_height_type( $post_id ) ); ?>" data-pins="<?php echo esc_html( htmlentities( wp_json_encode( $pins ) ) ); ?>"></div>
 			<?php
 
 			$content = ob_get_clean();

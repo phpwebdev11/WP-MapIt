@@ -102,6 +102,8 @@ if ( ! class_exists( 'Wp_Mapit_Blocks' ) ) {
 		public static function render_wp_mapit( $attributes ) {
 			ob_start();
 			$map_id = $attributes['wp_mapit_map'] ?? '';
+			$tags   = $attributes['tags'] ?? array();
+			$tags   = is_array( $tags ) ? array_map( 'intval', $tags ) : array();
 			$align  = $attributes['align'] ?? '';
 
 			if ( '' !== $map_id ) {
@@ -109,7 +111,7 @@ if ( ! class_exists( 'Wp_Mapit_Blocks' ) ) {
 				<div class="wp-mapit-block <?php echo esc_attr( '' !== $align ? ' align' . $align : '' ); ?>">
 					<?php
 					if ( Wp_Mapit_Multipin_Map::has_map( $map_id ) ) {
-						echo wp_kses_post( Wp_Mapit_Multipin_Map::generate_map( $map_id ) );
+						echo wp_kses_post( Wp_Mapit_Multipin_Map::generate_map( $map_id, $tags ) );
 					}
 					?>
 				</div>
