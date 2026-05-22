@@ -37,7 +37,7 @@ if ( ! class_exists( 'Wp_Mapit_Taxonomy' ) ) {
 				)
 			);
 
-            /* Set parent file file for taxonomy list table */
+			/* Set parent file file for taxonomy list table */
 			add_filter(
 				'parent_file',
 				array(
@@ -46,7 +46,7 @@ if ( ! class_exists( 'Wp_Mapit_Taxonomy' ) ) {
 				)
 			);
 
-            /* Set submenu file for taxonomy list table */
+			/* Set submenu file for taxonomy list table */
 			add_filter(
 				'submenu_file',
 				array(
@@ -54,10 +54,9 @@ if ( ! class_exists( 'Wp_Mapit_Taxonomy' ) ) {
 					'set_submenu_file',
 				)
 			);
-
 		}
 
-        /**
+		/**
 		 * Register the taxonomy for WP MapIt Plugin
 		 *
 		 * @since 3.2.0

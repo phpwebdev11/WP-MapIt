@@ -92,25 +92,27 @@ if ( ! class_exists( 'Wp_Mapit_Shortcode' ) ) {
 		 * @param string $slugs Comma-separated string of tag slugs.
 		 * @return array Returns an array of tag IDs corresponding to the provided slugs.
 		 */
-		 public static function wp_mapit_get_tag_ids_from_slugs( $slugs ) {
+		public static function wp_mapit_get_tag_ids_from_slugs( $slugs ) {
 			// Trim and split the slugs into an array.
 			$slugs = array_filter( array_map( 'trim', explode( ',', $slugs ) ) );
 
 			// If no slugs provided, return empty array.
 			if ( empty( $slugs ) ) {
-				return [];
+				return array();
 			}
 
 			// Get terms by slugs.
-			$terms = get_terms([
-				'taxonomy'   => 'wp_mapit_tag',
-				'slug'       => $slugs,
-				'hide_empty' => false,
-			]);
+			$terms = get_terms(
+				array(
+					'taxonomy'   => 'wp_mapit_tag',
+					'slug'       => $slugs,
+					'hide_empty' => false,
+				)
+			);
 
 			// If error or no terms found, return empty array.
 			if ( is_wp_error( $terms ) ) {
-				return [];
+				return array();
 			}
 
 			// Return array of term IDs.
