@@ -113,16 +113,16 @@ if ( ! class_exists( 'Wp_Mapit_Blocks' ) ) {
 		 */
 		public static function get_tags_by_post( $request ): string {
 			$map_id = (int) ( isset( $request['map_post'] ) ? $request['map_post'] : 0 );
-			
+
 			$tag_data = array();
 			if ( 0 !== $map_id ) {
 				// Get the tags for the selected map post.
 				$post_tags = array();
-				$pins = Wp_Mapit_Multipin_Map::get_map_pins( $map_id );
+				$pins      = Wp_Mapit_Multipin_Map::get_map_pins( $map_id );
 				if ( is_array( $pins ) && count( $pins ) > 0 ) {
 					foreach ( $pins as $pin ) {
-						$pin_tags = isset( $pin['tags'] ) ? (array) $pin['tags'] : array();
-						$pin_tags = array_map( 'intval', $pin_tags );
+						$pin_tags  = isset( $pin['tags'] ) ? (array) $pin['tags'] : array();
+						$pin_tags  = array_map( 'intval', $pin_tags );
 						$post_tags = array_merge( $post_tags, $pin_tags );
 					}
 				}

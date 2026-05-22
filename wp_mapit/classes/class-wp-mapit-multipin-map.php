@@ -177,17 +177,18 @@ if ( ! class_exists( 'Wp_Mapit_Multipin_Map' ) ) {
 		 * @since 1.0
 		 * @static
 		 * @access public
-		 * @param Int $post_id Id of the post.
+		 * @param Int   $post_id Id of the post.
 		 * @param array $tags Optional array of tag IDs to filter pins.
 		 * @return string Returns the map's markup as per the map id
 		 */
 		public static function generate_map( $post_id, $tags = array() ) {
 			ob_start();
-            
+
 			// Get pins and optionally filter by tags.
 			$pins = self::get_map_pins( $post_id );
+
 			if ( is_array( $tags ) && count( $tags ) > 0 ) {
-				$wanted = array_map( 'intval', $tags );
+				$wanted   = array_map( 'intval', $tags );
 				$filtered = array();
 				if ( is_array( $pins ) && count( $pins ) > 0 ) {
 					foreach ( $pins as $pin ) {

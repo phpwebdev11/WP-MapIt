@@ -138,7 +138,7 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Ajax' ) ) {
 			// Get the tags field HTML.
 			$base_key = isset( $_POST['base_key'] ) ? sanitize_text_field( wp_unslash( $_POST['base_key'] ) ) : '';
 			$index    = isset( $_POST['index'] ) ? sanitize_text_field( wp_unslash( $_POST['index'] ) ) : 0;
-			echo self::get_tags_field_html( $base_key, $index );
+			echo self::get_tags_field_html( $base_key, $index ); // phpcs:ignore
 			die();
 		}
 
@@ -151,7 +151,7 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Ajax' ) ) {
 		 *
 		 * @param string $base_key The base name for the select field.
 		 * @param int    $index The index to differentiate multiple fields.
-		 * @param array $selected_tags Optional selected term IDs.
+		 * @param array  $selected_tags Optional selected term IDs.
 		 * @return string HTML for the tags select field.
 		 */
 		public static function get_tags_field_html( string $base_key, int $index, array $selected_tags = array() ) {

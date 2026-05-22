@@ -93,13 +93,13 @@ if ( ! class_exists( 'Wp_Mapit_Taxonomy' ) ) {
 				'update_count_callback' => '_update_post_term_count',
 				'query_var'             => true,
 				'rewrite'               => array( 'slug' => 'wp_mapit_tag' ),
-                'show_in_rest'          => true,
-                'show_in_menu'          => false,
-                'meta_box_cb'           => false, // Remove tags meta box from post edit screen
-                'show_in_quick_edit'    => false, // Remove from quick edit
+				'show_in_rest'          => true,
+				'show_in_menu'          => false,
+				'meta_box_cb'           => false, // Remove tags meta box from post edit screen.
+				'show_in_quick_edit'    => false, // Remove from quick edit.
 			);
 
-            // Register the taxonomy for wp_mapit_map post type.
+			// Register the taxonomy for wp_mapit_map post type.
 			register_taxonomy( 'wp_mapit_tag', 'wp_mapit_map', $args );
 		}
 
@@ -114,7 +114,8 @@ if ( ! class_exists( 'Wp_Mapit_Taxonomy' ) ) {
 		 * @return string Modified parent file.
 		 */
 		public static function set_parent_file( $parent_file ) {
-			if ( isset( $_GET['taxonomy'] ) && 'wp_mapit_tag' === $_GET['taxonomy'] ) {
+			$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_text_field( wp_unslash( $_GET['taxonomy'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( 'wp_mapit_tag' === $taxonomy ) {
 				return 'wp_mapit';
 			}
 
@@ -132,7 +133,8 @@ if ( ! class_exists( 'Wp_Mapit_Taxonomy' ) ) {
 		 * @return string Modified submenu file.
 		 */
 		public static function set_submenu_file( $submenu_file ) {
-			if ( isset( $_GET['taxonomy'] ) && 'wp_mapit_tag' === $_GET['taxonomy'] ) {
+			$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_text_field( wp_unslash( $_GET['taxonomy'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( 'wp_mapit_tag' === $taxonomy ) {
 				return 'edit-tags.php?taxonomy=wp_mapit_tag&post_type=wp_mapit_map';
 			}
 

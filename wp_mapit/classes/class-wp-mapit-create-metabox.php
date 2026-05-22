@@ -14,8 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Access Denied' );
 }
 
-use Wp_Mapit_Admin_Ajax;
-
 if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 	/**
 	 * Class to manage metabox creation for WP MapIt
@@ -220,7 +218,7 @@ if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 														</div>
 														<?php
 															$pin_tags = isset( $pin['tags'] ) ? $pin['tags'] : array();
-															echo Wp_Mapit_Admin_Ajax::get_tags_field_html( $field['id'], $pin_cnt, $pin_tags );
+															echo Wp_Mapit_Admin_Ajax::get_tags_field_html( $field['id'], $pin_cnt, $pin_tags ); // phpcs:ignore
 														?>
 													</div>
 													<div class="column-3">
