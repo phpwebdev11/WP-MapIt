@@ -10,7 +10,7 @@
 	const UseState = useState;
 	const UseEffect = useEffect;
 
-	/* Style for the block displayed in the editor after block selected */
+	// Style for the block displayed in the editor after block selected.
 	var blockStyle = {
 		margin: '0 auto',
 		width: '100px',
@@ -18,7 +18,7 @@
 		display: 'block'
 	};
 
-	/* Registering the block */
+	// Registering the block.
 	blocks.registerBlockType( 'wp-mapit/wp-mapit-map-block', {
 		attributes: {
 			wp_mapit_map: {
@@ -30,13 +30,13 @@
 			}
 		},
 		edit( props ) {
-			const { attributes, setAttributes } = props;
+			const { attributes, setAttributes, isSelected } = props;
 
 			const [ editorContent, setEditorContent ] = UseState( null );
 			const [ tags, setTags ] = UseState( null );
 
-			// Get multipin map data through api.
-			UseEffect( () => {
+			// Load map data and tags when post change.
+			useEffect( () => {
 				// Get response for admin editor.
 				apiFetch( {
 					path: 'wp/v2/wp_mapit_map',
@@ -44,51 +44,67 @@
 					data: {
 						wp_mapit_map: attributes.wp_mapit_map,
 					},
-				} ).then(
-					( response ) => {
-						setEditorContent( response );
-					},
-				);
+				} ).then( ( response ) => {
+					setEditorContent( response );
+				} );
 
-				// Get tags for the selected map.
+				// Get tags for the selected map post.
 				apiFetch( {
 					path: 'wp/v2/get_tags_by_post',
 					method: 'POST',
 					data: {
 						map_post: attributes.wp_mapit_map,
 					},
-				} ).then(
-					( response ) => {
-						response = JSON.parse( response );
-						setTags( response );
-					},
-				);
+				} ).then( ( response ) => {
+					response = JSON.parse( response );
+					setTags( response );
 
-				// Load Select2 and initialize it on the tag select element after a delay to ensure the element is rendered.
-				setTimeout( () => {
-						const tagSelect = jQuery( '.wp-mapit-select2 select' );
+				} );
 
-						if ( tagSelect.length ) {
-							// Initialize Select2 on the tag select element.
-							tagSelect.select2( {
-								placeholder: __( 'Select Tags', 'wp-mapit' ),
-							} );
+			}, [ attributes.wp_mapit_map ] );
 
-							// On change event for the tag selection to update block attributes.
-							tagSelect.on( 'change', function () {
-								setAttributes( {
-									tags: jQuery( this ).val() || [],
-								} );
-							} );
-						}
-					}, 4000 );
-			}, [] );
+			// For autocomplete tags selection, initialize select2 when tags data changes or focus on block.
+			useEffect( () => {
+				// Wait for DOM update before initializing Select2 to ensure the select element is rendered.
+				requestAnimationFrame( () => {
+					const tagSelect = jQuery( '.wp-mapit-select2 select' );
+					
+					if ( ! isSelected || ! tagSelect.length ) {
+						return;
+					}
+					
+					// Destroy previous Select2 safely before re-initializing to prevent duplicates.
+					if ( tagSelect.hasClass( 'select2-hidden-accessible' ) ) {
+						tagSelect.select2( 'destroy' );
+					}
 
+					// Remove ALL old events.
+					tagSelect.off();
+
+					// Initialize Select2 on the tag select element.
+					tagSelect.select2( {
+						placeholder: __( 'Select Tags', 'wp-mapit' ),
+						width: '100%',
+						allowClear: true,
+						closeOnSelect: false,
+						dropdownParent: tagSelect.closest( '.wp-mapit-select2' ),
+					} );
+
+					// On change event for the tag selection to update block attributes.
+					tagSelect.on( 'change', function () {
+						setAttributes( {
+							tags: jQuery( this ).val() || [],
+						} );
+					} );
+				} );
+			}, [ tags, isSelected ] );
+
+			// Post default option.
 			const postList = [
 				{ value: '', label: __( 'Select', 'wp-mapit' ) },
 			];
 
-			/* Get posts for selection */
+			// Get posts for selection.
 			const postsArr = useSelect( ( select ) => {
 			    return select( 'core' ).getEntityRecords( 'postType', 'wp_mapit_map', { per_page: -1 } );
 			}, [] );
@@ -103,11 +119,6 @@
 					}
 				} );
 			}
-
-			// Get tags for selection.
-			/* const tags = useSelect( ( select ) => {
-				return select( 'core' ).getEntityRecords( 'taxonomy', 'wp_mapit_tag', { per_page: -1, } );
-			}, [] ); */
 			
 			// Map tags options.
 			const tagOptions = Array.isArray( tags ) ? tags.map( ( tag ) => ( { label: tag.name, value: tag.id, } ) ) : [];
