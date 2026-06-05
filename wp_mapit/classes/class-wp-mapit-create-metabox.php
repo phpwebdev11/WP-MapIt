@@ -171,7 +171,7 @@ if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 									<a href="#" class="upload_csv_file button"><?php esc_html_e( 'Import Pins CSV', 'wp-mapit' ); ?><span></span></a>
 
 									<?php
-										$csv_heading = 'Latitude,Longitude,Marker-Title,Marker-Content';
+										$csv_heading = 'Latitude,Longitude,Marker-Title,Marker-Content,Tags';
 										$url         = 'data:text/csv;charset=utf-8,' . rawurlencode( $csv_heading );
 									?>
 									<a href="<?php echo esc_attr( $url ); ?>" target="_blank" download="wp_mapit_pins_csv_template.csv" class="button"><?php esc_html_e( 'Download CSV Template', 'wp-mapit' ); ?></a>
@@ -466,6 +466,23 @@ if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 							if ( ! empty( $post_data ) && is_array( $post_data ) ) {
 								$raw_items = wp_unslash( $post_data );
 								foreach ( $raw_items as $item ) {
+									// Handle tags which can be a mix of term IDs and slugs.
+									$tag_ids = array_filter(
+										array_map(
+											static function ( $tag ) {
+												// If the tag is numeric, return it as an integer (assuming it's a term ID).
+												if ( is_numeric( $tag ) ) {
+													return (int) $tag;
+												}
+
+												// Otherwise, try to get the term by slug and return its ID.
+												$term = get_term_by( 'slug', $tag, 'wp_mapit_tag' );
+												return $term ? (int) $term->term_id : 0;
+											},
+											$item['tags'] ?? array()
+										)
+									);
+
 									$value[] = array(
 										'lat'            => isset( $item['lat'] ) ? (float) wp_unslash( $item['lat'] ) : 0,
 										'lng'            => isset( $item['lng'] ) ? (float) wp_unslash( $item['lng'] ) : 0,
@@ -473,7 +490,7 @@ if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 										'marker_title'   => isset( $item['marker_title'] ) ? sanitize_text_field( wp_unslash( $item['marker_title'] ) ) : '',
 										'marker_content' => isset( $item['marker_content'] ) ? wp_kses_post( wp_unslash( $item['marker_content'] ) ) : '',
 										'marker_url'     => isset( $item['marker_url'] ) ? esc_url_raw( wp_unslash( $item['marker_url'] ) ) : '',
-										'tags'           => isset( $item['tags'] ) ? array_map( 'intval', $item['tags'] ) : array(),
+										'tags'           => $tag_ids,
 									);
 
 								}

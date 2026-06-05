@@ -137,7 +137,7 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Ajax' ) ) {
 
 			// Get the tags field HTML.
 			$base_key = isset( $_POST['base_key'] ) ? sanitize_text_field( wp_unslash( $_POST['base_key'] ) ) : '';
-			$index    = isset( $_POST['index'] ) ? sanitize_text_field( wp_unslash( $_POST['index'] ) ) : 0;
+			$index    = isset( $_POST['index'] ) ? (int) sanitize_text_field( wp_unslash( $_POST['index'] ) ) : 0;
 			echo self::get_tags_field_html( $base_key, $index ); // phpcs:ignore
 			die();
 		}
@@ -167,7 +167,7 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Ajax' ) ) {
 
 			<div class="wp-mapit-row">
 				<label><?php echo esc_html__( 'Tags', 'wp-mapit' ); ?></label>
-				<select class="wp-mapit-select2" name="<?php echo esc_attr( $base_key ); ?>[<?php echo esc_attr( $index ); ?>][tags][]" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select Tags', 'wp-mapit' ); ?>">
+				<select class="wp-mapit-select2 pin_tags" name="<?php echo esc_attr( $base_key ); ?>[<?php echo esc_attr( $index ); ?>][tags][]" multiple="multiple" data-placeholder="<?php esc_attr_e( 'Select Tags', 'wp-mapit' ); ?>">
 					<?php
 					if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
 						foreach ( $terms as $term ) {

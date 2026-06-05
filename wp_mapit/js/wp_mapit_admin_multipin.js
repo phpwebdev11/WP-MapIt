@@ -575,7 +575,7 @@ jQuery( window ).on( 'load', function(){
 					async: false,
 					data: 'action=wp_mapit_get_tags' +
 						'&base_key=' + pinid +
-						'&counter=' + counter +
+						'&index=' + ( counter - 1 ) +
 						'&wp_mapit_ajax=' + wp_mapit.ajax_nonce,
 					success: function( html ) {
 						response = html;
@@ -706,6 +706,20 @@ jQuery( window ).on( 'load', function(){
         		jQuery("#pin_container_"+ _counter +" .pin_title").val((pin_data[2] != undefined ? pin_data[2] : '' ));
         		jQuery("#pin_container_"+ _counter +" .pin_content").val((pin_data[3] != undefined ? pin_data[3] : '' ));
         		// jQuery("#pin_container_"+ _counter +" .pin_url").val((pin_data[4] != undefined ? pin_data[4] : '' ));
+				
+				// Split the tags by comma and add them as options to the select field
+        		const tags = ( pin_data[4] != undefined ) ? pin_data[4] : '';
+        		tags.split( ',' ).forEach( function( tag ) {
+					tag = tag.trim();
+					// Append the option to the select field
+					if ( tag ) {
+						const option = new Option( tag, tag, true, true );
+						jQuery( "#pin_container_"+ _counter +" .pin_tags" ).append( option ); 
+					}
+				} );
+
+				// Trigger change event to update the Select2 field
+				jQuery( "#pin_container_"+ _counter +" .pin_tags" ).trigger( 'change' );
 		    }
 
 		    if( pin_data == undefined || pin_data.length == 0 ) {
