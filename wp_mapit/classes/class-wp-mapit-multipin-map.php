@@ -172,6 +172,20 @@ if ( ! class_exists( 'Wp_Mapit_Multipin_Map' ) ) {
 		}
 
 		/**
+		 * Get map marker URL open type, self tab or new tab
+		 *
+		 * @since 3.2.0
+		 * @static
+		 * @access public
+		 * @param Int $post_id Id of the post.
+		 * @return string Returns the URL open type for marker links
+		 */
+		public static function get_url_open_type( $post_id ) {
+			$url_open_type = trim( get_post_meta( $post_id, 'wpmi_multipin_map_marker_url_open_type', true ) );
+			return ( ( '1' === $url_open_type ) ? '_self' : '_blank' );
+		}
+
+		/**
 		 * Function to generate the map by id
 		 *
 		 * @since 1.0
@@ -202,7 +216,7 @@ if ( ! class_exists( 'Wp_Mapit_Multipin_Map' ) ) {
 				}
 			}
 			?>
-				<div id="wp_mapit_<?php echo esc_attr( wp_mapit_functions::generate_random_string() ); ?>" class="wp_mapit_multipin_map" data-lat="<?php echo esc_attr( self::get_map_latitude( $post_id ) ); ?>" data-lng="<?php echo esc_attr( self::get_map_longitude( $post_id ) ); ?>" data-zoom="<?php echo esc_attr( self::get_map_zoom( $post_id ) ); ?>" data-type="<?php echo esc_attr( self::get_map_type( $post_id ) ); ?>" data-marker="<?php echo esc_url( self::get_map_marker( $post_id ) ); ?>" data-width="<?php echo esc_attr( self::get_map_width( $post_id ) ); ?>" data-width-type="<?php echo esc_attr( self::get_map_width_type( $post_id ) ); ?>" data-height="<?php echo esc_attr( self::get_map_height( $post_id ) ); ?>" data-height-type="<?php echo esc_attr( self::get_map_height_type( $post_id ) ); ?>" data-pins="<?php echo esc_html( htmlentities( wp_json_encode( $pins ) ) ); ?>"></div>
+				<div id="wp_mapit_<?php echo esc_attr( wp_mapit_functions::generate_random_string() ); ?>" class="wp_mapit_multipin_map" data-lat="<?php echo esc_attr( self::get_map_latitude( $post_id ) ); ?>" data-lng="<?php echo esc_attr( self::get_map_longitude( $post_id ) ); ?>" data-zoom="<?php echo esc_attr( self::get_map_zoom( $post_id ) ); ?>" data-type="<?php echo esc_attr( self::get_map_type( $post_id ) ); ?>" data-marker="<?php echo esc_url( self::get_map_marker( $post_id ) ); ?>" data-width="<?php echo esc_attr( self::get_map_width( $post_id ) ); ?>" data-width-type="<?php echo esc_attr( self::get_map_width_type( $post_id ) ); ?>" data-height="<?php echo esc_attr( self::get_map_height( $post_id ) ); ?>" data-height-type="<?php echo esc_attr( self::get_map_height_type( $post_id ) ); ?>" data-pins="<?php echo esc_html( htmlentities( wp_json_encode( $pins ) ) ); ?>" data-url-open-type="<?php echo esc_attr( self::get_url_open_type( $post_id ) ); ?>"></div>
 			<?php
 
 			$content = ob_get_clean();

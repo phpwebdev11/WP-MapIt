@@ -242,6 +242,12 @@ if ( ! class_exists( 'Wp_Mapit_Metabox' ) ) {
 							'id'        => 'wpmi_multipin_map_marker_image',
 							'type'      => 'image',
 							'desc'      => __( 'Marker image to be displayed on the map. If no image is selected, default image will be displayed. Max size 100px X 100px. Image bigger then the size will be resized.', 'wp-mapit' ),
+						),
+						array(
+							'label'     => __( 'Marker URL open in same tab', 'wp-mapit' ),
+							'id'        => 'wpmi_multipin_map_marker_url_open_type',
+							'type'      => 'checkbox',
+							'desc'      => __( 'Open the marker URL in the same tab. Default is to open in a new tab.', 'wp-mapit' ),
 							'row_class' => 'no-margin',
 						),
 					),
