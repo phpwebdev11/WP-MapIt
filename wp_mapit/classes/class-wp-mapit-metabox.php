@@ -169,6 +169,12 @@ if ( ! class_exists( 'Wp_Mapit_Metabox' ) ) {
 								'desc'  => __( 'Open the marker URL in the same tab. Default is to open in a new tab.', 'wp-mapit' ),
 							),
 							array(
+								'label' => __( 'Show content on marker hover', 'wp-mapit' ),
+								'id'    => 'wpmi_marker_hover',
+								'type'  => 'checkbox',
+								'desc'  => __( 'Show the marker content when hovering over the marker.', 'wp-mapit' ),
+							),
+							array(
 								'label'     => __( 'Map Position', 'wp-mapit' ),
 								'id'        => 'wpmi_map_position',
 								'type'      => 'select',
