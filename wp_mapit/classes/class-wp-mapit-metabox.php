@@ -163,6 +163,12 @@ if ( ! class_exists( 'Wp_Mapit_Metabox' ) ) {
 								'sanitize' => 'sanitize_textarea',
 							),
 							array(
+								'label' => __( 'Marker URL open in same tab', 'wp-mapit' ),
+								'id'    => 'wpmi_marker_url_open_type',
+								'type'  => 'checkbox',
+								'desc'  => __( 'Open the marker URL in the same tab. Default is to open in a new tab.', 'wp-mapit' ),
+							),
+							array(
 								'label'     => __( 'Map Position', 'wp-mapit' ),
 								'id'        => 'wpmi_map_position',
 								'type'      => 'select',

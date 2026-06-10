@@ -17,6 +17,7 @@ jQuery( window ).on( 'load', function(){
 			var _width_type = _this.data( 'width-type' );
 			var _height = _this.data( 'height' );
 			var _height_type = _this.data( 'height-type' );
+			var _url_open_type = _this.data( 'url-open-type' );
 
 			_this.css( { 'width' : _width + (_width_type == 'per' ? 'vw' : _width_type), 'height' : _height + (_height_type == 'per' ? 'vh' : _height_type), 'margin' : '0 auto', 'max-width' : '100%', 'min-width' : '300px', 'max-height' : '100%' } );
 
@@ -61,7 +62,7 @@ jQuery( window ).on( 'load', function(){
 				if( _url != '' ) {
 					wp_mapit_map_marker._url = _url;
 					wp_mapit_map_marker.on( 'click', function() {
-						window.open( this._url );
+						window.open( this._url, _url_open_type );
 					} );
 				} else {
 					_html = '';
