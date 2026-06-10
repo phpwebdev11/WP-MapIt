@@ -136,7 +136,7 @@ if ( ! class_exists( 'Wp_Mapit_Blocks' ) ) {
 						if ( $tag && ! is_wp_error( $tag ) ) {
 							$tag_data[] = array(
 								'id'   => $tag->term_id ?? 0,
-								'name' => $tag->name ?? '',
+								'name' => wp_specialchars_decode( $tag->name ?? '' ),
 							);
 						}
 					}
