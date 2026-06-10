@@ -14,6 +14,7 @@ jQuery( window ).on( 'load', function(){
 			var _height_type = _this.data( 'height-type' );
 			var _pins = _this.data( 'pins' );
 			var _url_open_type = _this.data( 'url-open-type' );
+			var _marker_hover = _this.data( 'marker-hover' );
 
 			_this.css( { 'width' : _width + (_width_type == 'per' ? 'vw' : _width_type), 'height' : _height + (_height_type == 'per' ? 'vh' : _height_type), 'margin' : '0 auto', 'max-width' : '100%', 'min-width' : '300px', 'max-height' : '100%' } );
 
@@ -84,6 +85,19 @@ jQuery( window ).on( 'load', function(){
 							if ( _html != '' ) {
 								var popup = L.responsivePopup( { offset: [ 20, 20 ] } ).setContent( _html );
 								wp_mapit_map_marker.bindPopup( popup );
+
+								// Open popup on marker hover if enabled hover setting and device has hover capability.
+								if ( 'yes' === _marker_hover && window.matchMedia( '(hover: hover)' ).matches ) {
+									// Open popup on marker hover.
+									wp_mapit_map_marker.on( 'mouseover click', function() {
+										this.openPopup();
+									} );
+
+									// Close popup on marker mouseout.
+									wp_mapit_map_marker.on( 'mouseout', function() {
+										this.closePopup();
+									} );
+								}
 							}
 						}
 					}
