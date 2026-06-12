@@ -673,7 +673,7 @@ jQuery( window ).on( 'load', function(){
 				jQuery( '<div>' ).addClass( 'clearfix' )
 			);
 
-			jQuery( '#wpmi_mappin_container' ).append( _pinContainer );
+			jQuery( '#wpmi_mappin_container' ).prepend( _pinContainer );
 
 			/* Initialize Select2 for the new tag field */
 			tagsAutoComplete();
@@ -720,12 +720,6 @@ jQuery( window ).on( 'load', function(){
 
 				// Trigger change event to update the Select2 field
 				jQuery( "#pin_container_"+ _counter +" .pin_tags" ).trigger( 'change' );
-		    }
-
-		    if( pin_data == undefined || pin_data.length == 0 ) {
-				jQuery('html, body').animate({
-			        scrollTop: jQuery('#pin_container_' + _counter).offset().top
-			    }, 2000);
 		    }
 		}
 
