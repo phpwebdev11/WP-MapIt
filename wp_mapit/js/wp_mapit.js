@@ -60,43 +60,70 @@ jQuery( window ).on( 'load', function(){
 				wp_mapit_map_marker.unbindPopup();
 				wp_mapit_map_marker.off( 'click' );
 
+				// To open marker url.
 				if( _url != '' ) {
 					wp_mapit_map_marker._url = _url;
 					wp_mapit_map_marker.on( 'click', function() {
 						window.open( this._url, _url_open_type );
 					} );
-				} else {
-					_html = '';
+				}
 
-					if( jQuery.trim( _title ) != '' ) {
-						_html += '<h3>' + _title + '</h3>';
+				// Create popup content.
+				_html = '';
+
+				if( jQuery.trim( _title ) != '' ) {
+					_html += '<h3>' + _title + '</h3>';
+				}
+
+				if( jQuery.trim( _content ) != '' ) {
+
+					_content = _content.split( '\n' ).join( '<br>' );
+
+					_html += '<p>' + _content + '</p>';
+				}
+
+				// Show popup content if marker url is blank or on hover if enabled setting and hoverable device.
+				if( _html != '' && ( _url === '' || ( 'yes' === _marker_hover && window.matchMedia( '(hover: hover)' ).matches ) ) ) {
+					var popup = L.responsivePopup( { offset: [ 20, 20 ] } ).setContent( _html );
+					wp_mapit_map_marker.bindPopup( popup );
+
+					// Open popup on marker hover if enabled hover setting and device has hover capability.
+					if ( 'yes' === _marker_hover && window.matchMedia( '(hover: hover)' ).matches ) {
+						// Open popup on marker hover.
+						let popupTimeout;
+
+						// Marker pin hover.
+						wp_mapit_map_marker.on('mouseover', function () {
+							clearTimeout(popupTimeout);
+							this.openPopup();
+						});
+
+						// Marker pin hover out.
+						wp_mapit_map_marker.on('mouseout', function () {
+							const marker = this;
+
+							popupTimeout = setTimeout(function () {
+								marker.closePopup();
+							}, 300);
+						});
+
+						// Open popup.
+						wp_mapit_map_marker.on('popupopen', function (e) {
+							const popupEl = e.popup.getElement();
+
+							// Hover on content popup.
+							L.DomEvent.on(popupEl, 'mouseenter', function () {
+								clearTimeout(popupTimeout);
+							});
+
+							// Hover out on content popup.
+							L.DomEvent.on(popupEl, 'mouseleave', function () {
+								popupTimeout = setTimeout(function () {
+									wp_mapit_map_marker.closePopup();
+								}, 300);
+							});
+						});
 					}
-
-					if( jQuery.trim( _content ) != '' ) {
-
-						_content = _content.split( '\n' ).join( '<br>' );
-
-						_html += '<p>' + _content + '</p>';
-					}
-
-
-					if ( _html != '' ) {
-						var popup = L.responsivePopup( { offset: [ 20, 20 ] } ).setContent( _html );
-						wp_mapit_map_marker.bindPopup( popup );
-
-						// Open popup on marker hover if enabled hover setting and device has hover capability.
-						if ( 'yes' === _marker_hover && window.matchMedia( '(hover: hover)' ).matches ) {
-							// Open popup on marker hover.
-							wp_mapit_map_marker.on( 'mouseover click', function() {
-								this.openPopup();
-							} );
-
-							// Close popup on marker mouseout.
-							wp_mapit_map_marker.on( 'mouseout', function() {
-								this.closePopup();
-							} );
-						}
-					}	
 				}
 			}		
 		} );

@@ -114,10 +114,10 @@ if ( ! class_exists( 'Wp_Mapit_Metabox' ) ) {
 								'step'  => '1',
 							),
 							array(
-								'label'     => __( 'Map Type', 'wp-mapit' ),
-								'id'        => 'wpmi_map_type',
-								'type'      => 'select',
-								'options'   => array_merge(
+								'label'   => __( 'Map Type', 'wp-mapit' ),
+								'id'      => 'wpmi_map_type',
+								'type'    => 'select',
+								'options' => array_merge(
 									array(
 										array(
 											'value' => '',
@@ -126,7 +126,19 @@ if ( ! class_exists( 'Wp_Mapit_Metabox' ) ) {
 									),
 									$arr_map_types
 								),
-								'desc'      => __( 'Type of the map to be displayed.', 'wp-mapit' ),
+								'desc'    => __( 'Type of the map to be displayed.', 'wp-mapit' ),
+							),
+							array(
+								'label' => __( 'Marker URL open in same tab', 'wp-mapit' ),
+								'id'    => 'wpmi_marker_url_open_type',
+								'type'  => 'checkbox',
+								'desc'  => __( 'Open the marker URL in the same tab. Default is to open in a new tab.', 'wp-mapit' ),
+							),
+							array(
+								'label'     => __( 'Show content on marker hover', 'wp-mapit' ),
+								'id'        => 'wpmi_marker_hover',
+								'type'      => 'checkbox',
+								'desc'      => __( 'Show the marker content when hovering over the marker.', 'wp-mapit' ),
 								'row_class' => 'no-margin',
 							),
 						),
@@ -161,18 +173,6 @@ if ( ! class_exists( 'Wp_Mapit_Metabox' ) ) {
 								'type'     => 'url',
 								'desc'     => __( 'URL which will open on marker click. If Marker URL is entered, Marker Title and Marker Content will be ignored.', 'wp-mapit' ),
 								'sanitize' => 'sanitize_textarea',
-							),
-							array(
-								'label' => __( 'Marker URL open in same tab', 'wp-mapit' ),
-								'id'    => 'wpmi_marker_url_open_type',
-								'type'  => 'checkbox',
-								'desc'  => __( 'Open the marker URL in the same tab. Default is to open in a new tab.', 'wp-mapit' ),
-							),
-							array(
-								'label' => __( 'Show content on marker hover', 'wp-mapit' ),
-								'id'    => 'wpmi_marker_hover',
-								'type'  => 'checkbox',
-								'desc'  => __( 'Show the marker content when hovering over the marker.', 'wp-mapit' ),
 							),
 							array(
 								'label'     => __( 'Map Position', 'wp-mapit' ),
@@ -250,10 +250,10 @@ if ( ! class_exists( 'Wp_Mapit_Metabox' ) ) {
 							'desc'    => __( 'Type of the map to be displayed.', 'wp-mapit' ),
 						),
 						array(
-							'label'     => __( 'Marker Image', 'wp-mapit' ),
-							'id'        => 'wpmi_multipin_map_marker_image',
-							'type'      => 'image',
-							'desc'      => __( 'Marker image to be displayed on the map. If no image is selected, default image will be displayed. Max size 100px X 100px. Image bigger then the size will be resized.', 'wp-mapit' ),
+							'label' => __( 'Marker Image', 'wp-mapit' ),
+							'id'    => 'wpmi_multipin_map_marker_image',
+							'type'  => 'image',
+							'desc'  => __( 'Marker image to be displayed on the map. If no image is selected, default image will be displayed. Max size 100px X 100px. Image bigger then the size will be resized.', 'wp-mapit' ),
 						),
 						array(
 							'label' => __( 'Marker URL open in same tab', 'wp-mapit' ),
