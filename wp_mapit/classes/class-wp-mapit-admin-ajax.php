@@ -45,6 +45,15 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Ajax' ) ) {
 					'wp_mapit_get_tags',
 				),
 			);
+
+			/* To export pins as CSV file */
+			add_action(
+				'wp_ajax_wp_mapit_export_pins_csv',
+				array(
+					__CLASS__,
+					'wp_mapit_export_pins_csv',
+				),
+			);
 		}
 
 		/**
@@ -183,6 +192,118 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Ajax' ) ) {
 			<?php
 
 			return (string) ob_get_clean();
+		}
+
+		/**
+		 * To export pins as CSV file.
+		 *
+		 * @since 3.2.0
+		 * @static
+		 * @access public
+		 */
+		public static function wp_mapit_export_pins_csv() {
+
+			// Check nonce for security.
+			if ( ! check_ajax_referer( 'wp_mapit_admin_ajax_nonce', 'wp_mapit_ajax' ) ) {
+				echo wp_json_encode(
+					array(
+						'status'  => '0',
+						'message' => __( 'Invalid request.', 'wp-mapit' ),
+					)
+				);
+				die();
+			}
+
+			$post_id = isset( $_GET['post_id'] ) ? (int) sanitize_text_field( wp_unslash( $_GET['post_id'] ) ) : 0;
+			$pins    = (array) get_post_meta( $post_id, 'wp_mapit_pins', true );
+
+			// If no pins, send message.
+			if ( 0 === count( $pins ) ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'No pins found.', 'wp-mapit' ),
+					)
+				);
+			}
+
+			// Set the response headers to download the generated CSV file.
+			header( 'Content-Type: text/csv; charset=utf-8' );
+			header( 'Content-Disposition: attachment; filename=WpMapit-Pins.csv' );
+
+			// Create a temporary stream to generate the CSV before sending it in the response.
+			$stream = fopen( 'php://temp', 'r+' ); // phpcs:ignore
+
+			if ( false === $stream ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'Unable to create CSV output stream.', 'wp-mapit' ),
+					)
+				);
+			}
+
+			// Add column headers to the CSV file.
+			fputcsv(
+				$stream,
+				array(
+					'Latitude',
+					'Longitude',
+					'Marker Title',
+					'Marker URL',
+					'Marker Image',
+					'Tags',
+					'Marker Content',
+				)
+			);
+
+			// Write each pin as a CSV row.
+			foreach ( $pins as $pin ) {
+
+				// Get comma separated tags slug.
+				$tag_ids = $pin['tags'] ?? array();
+				$slugs   = array();
+				if ( is_array( $tag_ids ) && count( $tag_ids ) > 0 ) {
+					foreach ( $tag_ids as $tag_id ) {
+						$term = get_term( $tag_id );
+
+						if ( null !== $term && ! is_wp_error( $term ) ) {
+							$slugs[] = $term->slug;
+						}
+					}
+				}
+
+				$tags = implode( ', ', $slugs );
+
+				// Add pins data in CSV.
+				fputcsv(
+					$stream,
+					array(
+						$pin['lat'] ?? '',
+						$pin['lng'] ?? '',
+						$pin['marker_title'] ?? '',
+						$pin['marker_url'] ?? '',
+						$pin['marker_image'] ?? '',
+						$tags,
+						$pin['marker_content'] ?? '',
+					)
+				);
+			}
+
+			// Move the stream pointer to the beginning.
+			rewind( $stream );
+
+			// Get the generated CSV content from the stream.
+			$content = stream_get_contents( $stream );
+
+			// Close the temporary stream.
+			fclose( $stream ); // phpcs:ignore
+
+			// Send success response.
+			wp_send_json_success(
+				array(
+					'filename' => 'wp_mapit_pins.csv',
+					'content'  => $content,
+				)
+			);
 		}
 	}
 

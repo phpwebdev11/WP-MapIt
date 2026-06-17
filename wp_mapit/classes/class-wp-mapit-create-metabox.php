@@ -166,6 +166,13 @@ if ( ! class_exists( 'Wp_Mapit_Create_Metabox' ) ) {
 
 							?>
 								<div class="wp-mapit-row button-container text-right">
+									<?php
+									if ( $counter > 0 ) {
+										?>
+										<a href="#" class="export_pins button" data-id="<?php echo esc_attr( $post->ID ?? 0 ); ?>"><?php esc_html_e( 'Export Pins', 'wp-mapit' ); ?></a>
+										<?php
+									}
+									?>
 									<a href="#wp-mapit-metabox-map" class="button"><?php esc_html_e( 'Preview Map', 'wp-mapit' ); ?></a>
 									<a href="#" id="add_multipin" data-pinid="<?php echo esc_attr( $field['id'] ); ?>" data-counter="<?php echo esc_attr( $counter ); ?>" class="button"><?php esc_html_e( 'Add Map Pin', 'wp-mapit' ); ?></a>
 									<a href="#" class="upload_csv_file button"><?php esc_html_e( 'Import Pins CSV', 'wp-mapit' ); ?><span></span></a>

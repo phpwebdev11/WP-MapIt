@@ -736,6 +736,51 @@ jQuery( window ).on( 'load', function(){
 		/* Initialize Select2 for existing tag fields on page load. */
 		tagsAutoComplete();
 
+		/* Export All Pins */
+		jQuery( document ).on( 'click', '.export_pins', function( e ){
+			e.preventDefault();
+
+			_this = jQuery( this );
+
+			if( ! _this.hasClass('disabled') ) {
+				_this.addClass( 'disabled' );
+
+				jQuery.ajax( {
+					url: wp_mapit.ajax_url,
+					data: 'action=wp_mapit_export_pins_csv' +
+						'&post_id=' + _this.attr( 'data-id' ) +
+						'&wp_mapit_ajax=' + wp_mapit.ajax_nonce,
+					success: function( response ) {
+						_this.removeClass( 'disabled' );
+
+						// For Errors.
+						if ( ! response.success ) {
+							alert( response.data.message );
+							return;
+						}
+
+						// Process download.
+						const blob = new Blob(
+							[ response.data.content ],
+							{ type: 'text/csv;charset=utf-8;' }
+						);
+
+						const link = document.createElement( 'a' );
+						link.href = URL.createObjectURL( blob );
+						link.download = response.data.filename;
+
+						document.body.appendChild( link );
+						link.click();
+						link.remove();
+
+						URL.revokeObjectURL( link.href );
+					},
+					error: function(){
+						_this.removeClass( 'disabled' );
+					}
+				} );
+			}
+		} );
 	}
 
 });
