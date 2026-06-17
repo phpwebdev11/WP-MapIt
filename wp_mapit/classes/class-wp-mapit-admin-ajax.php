@@ -247,11 +247,11 @@ if ( ! class_exists( 'Wp_Mapit_Admin_Ajax' ) ) {
 				array(
 					'Latitude',
 					'Longitude',
-					'Marker Title',
-					'Marker URL',
-					'Marker Image',
+					'Marker-Title',
+					'Marker-Url',
+					'Marker-Image',
 					'Tags',
-					'Marker Content',
+					'Marker-Content',
 				)
 			);
 
